@@ -20,8 +20,8 @@ If you're:
 I'm Cristian Tala Sánchez—founder, investor, and startup mentor.
 
 **Relevant context:**
-- Exit founder (sold tech startup, now investing + mentoring startups)
-- 30+ angel investments in Latin American startups
+- Sold my tech startup (fintech), now angel investor and mentor
+- 30+ startup investments across Latin America
 - Mentor in accelerators and incubation programs
 - Running OpenClaw 24/7 for content automation, community engagement, and business operations
 
@@ -245,4 +245,4 @@ Ready to optimize your OpenClaw production setup?
 **Files Indexed:** 38 (382 chunks, 0 failures)  
 **Active Tasks:** 99  
 **Automated Workflows:** 12  
-**Author:** Cristian Tala Sánchez (Exit founder, investor, startup mentor)
+**Author:** Cristian Tala Sánchez (Founder, investor, startup mentor)

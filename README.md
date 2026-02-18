@@ -1,6 +1,6 @@
 # OpenClaw Production Guide
 
-> **Real-world optimization from an exit founder mentoring startups in tech and automation**
+> **Real-world optimization from a founder who sold his tech startup and now mentors others in tech and automation**
 
 Running OpenClaw in production is different from running it as a toy project. This guide shares hard-earned lessons from **38 files indexed, 99 active tasks, 12 automated workflows, and countless hours optimizing costs without sacrificing quality.**
 
@@ -46,10 +46,10 @@ Most OpenClaw guides show you how to *set it up*. Few show you how to *run it at
 - Downtime = lost revenue or missed opportunities
 
 **My background:**
-- Exit founder (sold tech startup, now investing + mentoring)
-- 30+ startup investments as angel investor
-- Running OpenClaw 24/7 for content automation, community engagement, and business ops
-- Mentoring hundreds of founders in tech and automation strategies
+- Sold my tech startup (fintech), now angel investor and mentor
+- 30+ startup investments across Latin America
+- Running OpenClaw 24/7 for content automation, community engagement, and business operations
+- Mentoring founders in tech, automation, and startup growth
 
 This guide distills **what actually works** when cost, quality, and reliability all matter.
 
