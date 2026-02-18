@@ -1,0 +1,16 @@
+{
+  "agents": {
+    "defaults": {
+      "model": {
+        "primary": "anthropic/claude-sonnet-4-5",
+        "fallbacks": [
+          "anthropic/claude-opus-4-6",
+          "anthropic/claude-haiku-4-5"
+        ]
+      },
+      "heartbeat": {
+        "model": "anthropic/claude-haiku-4-5"
+      }
+    }
+  }
+}

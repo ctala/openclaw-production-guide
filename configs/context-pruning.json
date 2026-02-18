@@ -1,0 +1,13 @@
+{
+  "agents": {
+    "defaults": {
+      "contextPruning": {
+        "mode": "cache-ttl",
+        "ttl": "6h"
+      },
+      "compaction": {
+        "mode": "default"
+      }
+    }
+  }
+}

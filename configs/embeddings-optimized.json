@@ -1,0 +1,41 @@
+{
+  "agents": {
+    "defaults": {
+      "memorySearch": {
+        "enabled": true,
+        "provider": "openai",
+        "model": "text-embedding-3-small",
+        "remote": {
+          "batch": {
+            "enabled": true,
+            "wait": false,
+            "concurrency": 2,
+            "pollIntervalMs": 5000,
+            "timeoutMinutes": 10
+          }
+        },
+        "sync": {
+          "onSessionStart": false,
+          "onSearch": true,
+          "watch": true,
+          "watchDebounceMs": 30000,
+          "intervalMinutes": 60
+        },
+        "cache": {
+          "enabled": true,
+          "maxEntries": 50000
+        },
+        "query": {
+          "maxResults": 6,
+          "minScore": 0.35,
+          "hybrid": {
+            "enabled": true,
+            "vectorWeight": 0.7,
+            "textWeight": 0.3,
+            "candidateMultiplier": 4
+          }
+        }
+      }
+    }
+  }
+}
