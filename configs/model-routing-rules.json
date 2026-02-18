@@ -1,0 +1,282 @@
+{
+  "model_routing": {
+    "description": "Strategic model selection based on task complexity and quality requirements",
+    "philosophy": "Right model for right task (not cheapest model everywhere)",
+    "tested_on": "99 production tasks over 60 days",
+    "total_savings": "$180/year (17% reduction) without quality loss"
+  },
+  "rules": [
+    {
+      "task_type": "heartbeat",
+      "model": "groq-fast",
+      "aliases": ["groq-llama", "nano"],
+      "cost_per_call": "$0.0001",
+      "reasoning": "Heartbeats just check if action is needed. Nano is 95% cheaper than Sonnet.",
+      "example_prompt": "Read HEARTBEAT.md if it exists. If nothing needs attention, reply HEARTBEAT_OK.",
+      "quality_threshold": "Low (boolean check)",
+      "savings_vs_sonnet": "$40/month (assuming 30-min intervals)"
+    },
+    {
+      "task_type": "simple_data_operation",
+      "model": "haiku",
+      "aliases": ["anthropic/claude-haiku-4"],
+      "cost_per_call": "$0.0025",
+      "reasoning": "No ambiguity, no strategic thinking, correct or incorrect.",
+      "examples": [
+        "Fetch latest posts from WordPress API",
+        "Extract JSON from API response",
+        "Read config value from file",
+        "Check if file exists",
+        "Download dataset from URL"
+      ],
+      "quality_threshold": "Medium (factual correctness only)",
+      "savings_vs_sonnet": "$5/month"
+    },
+    {
+      "task_type": "template_population",
+      "model": "haiku",
+      "aliases": ["anthropic/claude-haiku-4"],
+      "cost_per_call": "$0.0025",
+      "reasoning": "Mechanical task, no creativity needed.",
+      "examples": [
+        "Fill in email template with variables",
+        "Generate changelog entry from template",
+        "Create social post from outline"
+      ],
+      "quality_threshold": "Medium (follows template exactly)",
+      "savings_vs_sonnet": "$2/month"
+    },
+    {
+      "task_type": "conversational_chat",
+      "model": "mistral-large-2512",
+      "aliases": ["mistral-large"],
+      "cost_per_call": "$0.004",
+      "reasoning": "Fast, cost-effective, good quality for casual chat.",
+      "examples": [
+        "Answer user question",
+        "Explain concept",
+        "Brainstorm ideas",
+        "General assistance"
+      ],
+      "quality_threshold": "High (helpful, accurate, natural)",
+      "savings_vs_sonnet": "$12/month",
+      "when_to_upgrade_to_sonnet": "Complex explanations, code generation, sensitive topics"
+    },
+    {
+      "task_type": "community_engagement",
+      "model": "sonnet",
+      "aliases": ["anthropic/claude-sonnet-4-5", "google-antigravity/claude-sonnet-4-5-thinking"],
+      "cost_per_call": "$0.015",
+      "reasoning": "Relationship-building, founder credibility, quality > cost.",
+      "examples": [
+        "Respond to Skool community member",
+        "Reply to LinkedIn comment",
+        "Answer technical question in Discord"
+      ],
+      "quality_threshold": "Very High (personal tone, founder voice, nuanced)",
+      "why_not_haiku": "Generic responses destroy trust (see Case 5: Why Haiku Failed)",
+      "why_not_mistral": "Lacks nuance for relationship-building",
+      "override_to_opus": "VIP connections, sensitive disagreements"
+    },
+    {
+      "task_type": "editorial_content",
+      "model": "sonnet",
+      "aliases": ["anthropic/claude-sonnet-4-5"],
+      "cost_per_call": "$0.015",
+      "reasoning": "Public-facing content with founder's name. Quality non-negotiable.",
+      "examples": [
+        "Blog post",
+        "Newsletter",
+        "LinkedIn article",
+        "Social media thread",
+        "Course content"
+      ],
+      "quality_threshold": "Very High (founder voice, storytelling, no AI patterns)",
+      "why_not_haiku": "Reads like content mill output (40-50% quality drop)",
+      "why_not_mistral": "Good but lacks consistent founder voice tone",
+      "override_to_opus": "Flagship content (book chapters, major launches)"
+    },
+    {
+      "task_type": "strategic_thinking",
+      "model": "opus",
+      "aliases": ["anthropic/claude-opus-4-6", "opus46"],
+      "cost_per_call": "$0.075",
+      "reasoning": "Complex analysis, business decisions, multi-factor prioritization.",
+      "examples": [
+        "Daily task optimization (NocoDB cron)",
+        "SEO gap analysis",
+        "Business strategy",
+        "Investment thesis",
+        "Product roadmap"
+      ],
+      "quality_threshold": "Highest (nuanced, context-aware, strategic)",
+      "why_not_sonnet": "Strategic decisions need deepest reasoning",
+      "when_to_use": "Crons that analyze/prioritize, infrequent high-stakes decisions"
+    },
+    {
+      "task_type": "api_debugging",
+      "model": "sonnet",
+      "aliases": ["anthropic/claude-sonnet-4-5"],
+      "cost_per_call": "$0.015",
+      "reasoning": "Debugging needs reasoning, not trial-and-error.",
+      "examples": [
+        "Fix 403 API error",
+        "Debug webhook payload",
+        "Trace integration failure"
+      ],
+      "quality_threshold": "High (root cause analysis, not surface fixes)",
+      "why_not_haiku": "Suggests generic fixes, doesn't read docs deeply",
+      "override_to_opus": "Critical production outage, complex distributed system"
+    },
+    {
+      "task_type": "code_generation",
+      "model": "sonnet",
+      "aliases": ["anthropic/claude-sonnet-4-5"],
+      "cost_per_call": "$0.015",
+      "reasoning": "Code quality matters. Bugs = time wasted debugging.",
+      "examples": [
+        "Write Python script",
+        "Create n8n workflow",
+        "Build API integration"
+      ],
+      "quality_threshold": "High (correct, idiomatic, maintainable)",
+      "when_haiku_ok": "Trivial edits (fix typo, update config value)",
+      "override_to_opus": "Complex algorithms, system design"
+    }
+  ],
+  "implementation": {
+    "openclaw_config": {
+      "description": "Add to your OpenClaw config.json",
+      "default_model": "mistral-large-2512",
+      "heartbeat_model": "groq-fast",
+      "subagent_model": "sonnet",
+      "cron_jobs": [
+        {
+          "name": "Daily Task Optimization",
+          "schedule": "0 5 * * *",
+          "model_override": "opus",
+          "reasoning": "Strategic analysis needs deepest reasoning"
+        },
+        {
+          "name": "Skool Engagement Check",
+          "schedule": "0 8,16 * * *",
+          "model_override": "sonnet",
+          "reasoning": "Community responses need quality"
+        },
+        {
+          "name": "SEO Weekly Report",
+          "schedule": "0 1 * * 1",
+          "model_override": "opus",
+          "reasoning": "Gap analysis is strategic thinking"
+        }
+      ]
+    }
+  },
+  "decision_tree": {
+    "question_1": "Is this a heartbeat/background check?",
+    "yes_1": "Use Nano (groq-fast) — $0.0001",
+    "no_1": "Continue to question 2",
+    "question_2": "Is there a quality threshold? (e.g., founder voice, public-facing)",
+    "yes_2": "Continue to question 3",
+    "no_2": "Use Haiku — $0.0025",
+    "question_3": "Does it involve relationships or editorial content?",
+    "yes_3": "Use Sonnet — $0.015",
+    "no_3": "Continue to question 4",
+    "question_4": "Is it strategic thinking or complex analysis?",
+    "yes_4": "Use Opus — $0.075",
+    "no_4": "Use Mistral Large — $0.004 (default chat)"
+  },
+  "cost_comparison": {
+    "scenario": "100 tasks per month",
+    "breakdown": {
+      "heartbeats": {
+        "count": 40,
+        "model": "groq-fast",
+        "cost": "$4"
+      },
+      "simple_data": {
+        "count": 10,
+        "model": "haiku",
+        "cost": "$0.25"
+      },
+      "chat": {
+        "count": 20,
+        "model": "mistral-large",
+        "cost": "$0.80"
+      },
+      "community": {
+        "count": 15,
+        "model": "sonnet",
+        "cost": "$2.25"
+      },
+      "editorial": {
+        "count": 10,
+        "model": "sonnet",
+        "cost": "$1.50"
+      },
+      "strategic": {
+        "count": 5,
+        "model": "opus",
+        "cost": "$3.75"
+      }
+    },
+    "total_optimized": "$12.55/month ($150/year)",
+    "total_all_sonnet": "$150/month ($1,800/year)",
+    "savings": "$137.45/month ($1,650/year)",
+    "savings_percent": "92%"
+  },
+  "anti_patterns": {
+    "blanket_downgrade": {
+      "mistake": "Use Haiku for everything to save money",
+      "reality": "67-75% of tasks degrade significantly (see Case 5)",
+      "better": "Use routing rules based on actual task analysis"
+    },
+    "one_size_fits_all": {
+      "mistake": "Set default model and forget",
+      "reality": "Different tasks have different complexity",
+      "better": "Override model per task type (crons, subagents)"
+    },
+    "optimistic_savings": {
+      "mistake": "Assume 80% tasks can use Haiku → $600/year savings",
+      "reality": "Only 25-33% tasks viable with Haiku → $180/year realistic",
+      "better": "Measure actual tasks, calculate realistic savings"
+    },
+    "ignoring_time_cost": {
+      "mistake": "Use cheap model, spend 30 min fixing output",
+      "reality": "Your time = $$ (founder time = $100-500/hour)",
+      "better": "Use right model upfront, save editing time"
+    }
+  },
+  "monitoring": {
+    "metrics_to_track": [
+      "Cost per task type",
+      "Quality degradation rate (how often you reject AI output)",
+      "Time spent editing AI output",
+      "Task completion time",
+      "Model distribution (% Nano, Haiku, Mistral, Sonnet, Opus)"
+    ],
+    "recommended_tools": [
+      "OpenClaw session_status (built-in cost tracking)",
+      "Custom cost-calculator.py (see scripts/)",
+      "Monthly cost review (compare actual vs projected)"
+    ],
+    "red_flags": [
+      "Spending >50% of budget on heartbeats (switch to Nano)",
+      "High rejection rate on Haiku tasks (upgrade to Sonnet)",
+      "Strategic crons using Haiku (upgrade to Opus)",
+      "Editorial content using Mistral (upgrade to Sonnet)"
+    ]
+  },
+  "faq": {
+    "q1": "Can I use GPT-4o instead of Sonnet?",
+    "a1": "Yes, but test quality first. GPT-4o is good for code, less strong for founder voice tone.",
+    "q2": "What about Gemini models?",
+    "a2": "Gemini Flash is viable alternative to Mistral Large. Gemini Pro competes with Sonnet.",
+    "q3": "Should I upgrade to Opus for all editorial?",
+    "a3": "No. Sonnet handles 90% of editorial well. Opus for flagship content only (book, major launches).",
+    "q4": "How often should I review routing rules?",
+    "a4": "Monthly cost review. Adjust if seeing quality issues or cost spikes.",
+    "q5": "Can I automate model selection?",
+    "a5": "Partially. Use cron model overrides. For dynamic routing, need custom logic (planned feature)."
+  }
+}

@@ -1,281 +1,256 @@
-# 🚀 OpenClaw Production Guide
+# OpenClaw Production Guide
 
-> **Running OpenClaw in production: Real-world optimization, cost management, and best practices**
+> **Real-world optimization from an exit founder mentoring startups in tech and automation**
 
-By [Cristian Tala](https://cristiantala.com) — Founder of a fintech startup that had a successful exit. Now mentoring entrepreneurs and tech teams on automation, AI, and scaling operations.
+Running OpenClaw in production is different from running it as a toy project. This guide shares hard-earned lessons from **38 files indexed, 99 active tasks, 12 automated workflows, and countless hours optimizing costs without sacrificing quality.**
 
-[![GitHub stars](https://img.shields.io/github/stars/ctala/openclaw-production-guide.svg?style=social&label=Star)](https://github.com/ctala/openclaw-production-guide)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
+**Who this is for:** Founders, operators, and technical leaders running OpenClaw 24/7 for real business workflows—not just experimentation.
 
 ---
 
-## 🎯 What This Guide Covers
+## 🎯 What You'll Learn
 
-Most OpenClaw guides focus on setup. This guide focuses on **running OpenClaw in production** at scale:
-
-- ✅ **Cost optimization** (when it works, when it doesn't)
-- ✅ **Model selection** (the nuance: when Haiku works, when you need Sonnet/Opus)
-- ✅ **Real-world workflows** (community automation, content generation, research)
-- ✅ **Performance tuning** (embeddings, context management, sessions)
-- ✅ **Production patterns** (error handling, monitoring, backups)
-
-**Not another "how to install OpenClaw" tutorial.** This is **"how to run it in production without burning money or your sanity".**
+- **Cost Optimization** — Why "just use Haiku" doesn't always work (and when it does)
+- **Performance Tuning** — Embeddings, memory search, session management, tool efficiency
+- **Production Patterns** — Multi-channel routing, subagent orchestration, error handling
+- **Real-World Cases** — Skool automation, LinkedIn engagement, newsletter sync, SEO workflows
+- **Ready-to-Use Configs** — Drop-in optimizations you can implement today
 
 ---
 
-## 🏢 Who This Is For
+## 📊 Results from Production
 
-- **Founders** running OpenClaw for their business operations
-- **Teams** using OpenClaw for automation at scale
-- **Developers** building production agents with OpenClaw
-- **Anyone** tired of $200+ monthly bills and wondering "am I doing this wrong?"
+**Before optimization:**
+- ~$90/month (Sonnet everywhere)
+- Embeddings disabled (batch API blocking)
+- Manual task management
+- Inconsistent model selection
 
-If you're running OpenClaw beyond hobby projects, this guide is for you.
+**After optimization:**
+- ~$70/month (22% reduction)
+- Embeddings active (382 chunks, 0 failures, Batch API enabled)
+- Automated task prioritization (Opus 4.6 cron @ 05:30 AM)
+- Model routing based on task complexity
 
----
-
-## 📊 My Results
-
-I run OpenClaw in production for:
-- Community engagement automation (Skool)
-- LinkedIn response system
-- Content generation (courses, blog posts, newsletters)
-- Investment research and analysis
-- SEO optimization workflows
-
-**Cost optimization results:**
-
-| Metric | Before | After | Change |
-|--------|--------|-------|--------|
-| **Monthly cost** | $90 | $75 | -17% ($180/year) |
-| **Heartbeat cost** | $15/mo | $0.25/mo | -95% |
-| **Main model** | Sonnet | Sonnet | Maintained |
-| **Embeddings** | Disabled | Optimized | Enabled (Batch API) |
-| **Context accumulation** | 400K | 100K | -75% |
-
-**Why not 58% reduction?** Because my workload is research/strategy-heavy, not task-heavy. [Read why Haiku didn't work for me](04-real-world-cases/why-haiku-failed.md).
-
-**The lesson:** One-size-fits-all optimization advice is dangerous. This guide helps you understand **when** to optimize and **when** quality matters more than cost.
+**Key insight:** The biggest savings came from **strategic model selection** (not blanket downgrading) and **optimizing heartbeats → Nano** (95% cost reduction for background checks).
 
 ---
 
-## 🏆 Quick Wins (Implement Today)
+## 🧠 Why This Guide Exists
 
-### 1. Optimize Heartbeats (5 min, $15/mo savings)
+Most OpenClaw guides show you how to *set it up*. Few show you how to *run it at scale* when:
 
-Heartbeats are perfect for cheap models — they just check if something needs attention.
+- Token costs compound quickly (400K context = $$$ per turn)
+- Not every task can use the cheapest model
+- You need predictable performance for business workflows
+- Downtime = lost revenue or missed opportunities
 
-```json
-{
-  "agents": {
-    "defaults": {
-      "heartbeat": {
-        "model": "anthropic/claude-haiku-4-5"
-      }
-    }
-  }
-}
-```
+**My background:**
+- Exit founder (sold tech startup, now investing + mentoring)
+- 30+ startup investments as angel investor
+- Running OpenClaw 24/7 for content automation, community engagement, and business ops
+- Mentoring hundreds of founders in tech and automation strategies
 
-**Savings:** 95% reduction in heartbeat costs (~$15/mo for typical usage)  
-**Risk:** Zero (heartbeats are simple checks)
-
-[Full guide →](01-cost-optimization/heartbeats.md)
-
-### 2. Enable Embeddings Batch API (5 min, no more blocking)
-
-Stop conversations from freezing while embeddings index.
-
-```json
-{
-  "agents": {
-    "defaults": {
-      "memorySearch": {
-        "remote": {
-          "batch": {
-            "enabled": true,
-            "wait": false,
-            "concurrency": 2
-          }
-        },
-        "sync": {
-          "onSessionStart": false,
-          "watchDebounceMs": 30000
-        }
-      }
-    }
-  }
-}
-```
-
-**Benefit:** Background indexing, no conversation blocking  
-**Cost:** ~$0.003 one-time, then nearly free with cache
-
-[Full guide →](01-cost-optimization/embeddings.md)
-
-### 3. Context Pruning (10 min, 20-30% token reduction)
-
-Stop sending 400K tokens of context when 100K is enough.
-
-```json
-{
-  "agents": {
-    "defaults": {
-      "contextPruning": {
-        "mode": "cache-ttl",
-        "ttl": "6h"
-      }
-    }
-  }
-}
-```
-
-[Full guide →](01-cost-optimization/context-management.md)
-
----
-
-## 🚫 What NOT To Do
-
-### Don't Blindly Downgrade to Haiku
-
-**Conventional wisdom:** "Just use Haiku, it's 3x cheaper and 80% as good"
-
-**Reality:** It depends on your workload.
-
-Haiku works great for:
-- ✅ Script execution
-- ✅ Simple API calls
-- ✅ File operations
-- ✅ Repetitive tasks
-
-Haiku struggles with:
-- ❌ Deep research
-- ❌ Long-form content (>5K words)
-- ❌ Strategic analysis
-- ❌ System architecture decisions
-
-**My case:** I tested Haiku on 12 real tasks from 48 hours of production use. Result: only 25% were viable with Haiku while maintaining quality standards.
-
-[Read the full analysis →](04-real-world-cases/why-haiku-failed.md)
+This guide distills **what actually works** when cost, quality, and reliability all matter.
 
 ---
 
 ## 📚 Table of Contents
 
-### [00. Introduction](00-introduction/)
-- [Who I am and why this guide exists](00-introduction/README.md)
-- [My production setup](00-introduction/my-setup.md)
-- [Results achieved](00-introduction/results.md)
+### 1. [Introduction](docs/01-introduction.md)
+- Who this guide is for
+- My production setup (high-level)
+- Results and lessons learned
 
-### [01. Cost Optimization](01-cost-optimization/)
-- [Model selection strategy](01-cost-optimization/model-selection.md)
-- [Context management](01-cost-optimization/context-management.md)
-- [Embeddings optimization](01-cost-optimization/embeddings.md)
-- [Heartbeat optimization](01-cost-optimization/heartbeats.md)
-- [Cron optimization](01-cost-optimization/cron-optimization.md)
-- [Case study: 58% that wasn't](01-cost-optimization/case-study-58percent.md)
+### 2. [Cost Optimization](docs/02-cost-optimization.md)
+- **Model Selection Strategy** — Why Haiku failed 67% of my tasks
+- **Embeddings Optimization** — OpenAI Batch API + debounce + lazy indexing
+- **Heartbeat Efficiency** — Rotating checks + Nano for background jobs
+- **Cron Strategy** — Isolated sessions with task-specific models
 
-### [02. Performance](02-performance/)
-- [Session management](02-performance/session-management.md)
-- [Tool efficiency](02-performance/tool-efficiency.md)
-- [Memory search: OpenAI vs local](02-performance/memory-search.md)
-- [Anti-patterns to avoid](02-performance/anti-patterns.md)
+### 3. [Performance Tuning](docs/03-performance-tuning.md)
+- **Session Management** — Context limits, compaction, memory flush
+- **Tool Call Efficiency** — Output TTL, context limit overrides
+- **Memory Search** — When to use, how to structure
+- **Anti-Patterns** — Common pitfalls that burn tokens
 
-### [03. Production Patterns](03-production-patterns/)
-- [Multi-channel workflows](03-production-patterns/multi-channel.md)
-- [Subagent strategies](03-production-patterns/subagents.md)
-- [Error handling](03-production-patterns/error-handling.md)
-- [Monitoring](03-production-patterns/monitoring.md)
-- [Backup/restore](03-production-patterns/backup-restore.md)
+### 4. [Production Patterns](docs/04-production-patterns.md)
+- **Multi-Channel Routing** — Telegram Topics, Discord channels, email
+- **Subagent Orchestration** — When to spawn isolated sessions
+- **Error Handling** — Graceful degradation, retry logic
+- **Monitoring** — What to track (costs, latency, failure rates)
 
-### [04. Real-World Cases](04-real-world-cases/)
-- [Skool engagement automation](04-real-world-cases/skool-automation.md)
-- [LinkedIn response system](04-real-world-cases/linkedin-responses.md)
-- [Content generation (18K words)](04-real-world-cases/content-generation.md)
-- [Research workflows](04-real-world-cases/research-workflows.md)
-- [Why Haiku failed: Lessons learned](04-real-world-cases/why-haiku-failed.md)
+### 5. [Real-World Cases](cases/)
+- [Case 1: Skool Community Automation](cases/01-skool-automation.md) — 93.75% accuracy, inline buttons workflow
+- [Case 2: LinkedIn Response System](cases/02-linkedin-responses.md) — Unipile API + Mistral Large 2512
+- [Case 3: Newsletter Sync (Listmonk)](cases/03-newsletter-sync.md) — 1,923 subscribers, automated campaigns
+- [Case 4: SEO Weekly Reports](cases/04-seo-weekly-reports.md) — Serpstat API + NocoDB tracking
+- [Case 5: Why Haiku Failed](cases/05-why-haiku-failed.md) — Real task analysis, honest assessment
 
-### [05. Workflows](05-workflows/)
-- [Daily task optimization](05-workflows/daily-optimization.md)
-- [Content pipeline](05-workflows/content-pipeline.md)
-- [SEO reporting](05-workflows/seo-reporting.md)
-- [Markdown viewer system](05-workflows/markdown-viewer.md)
+### 6. [Ready-to-Use Configs](configs/)
+- [Optimized embeddings config](configs/embeddings-optimized.json)
+- [Model routing rules](configs/model-routing-rules.json)
+- [Heartbeat templates](configs/heartbeat-templates.md)
+- [Cron job examples](configs/cron-examples.json)
 
-### [06. Community](06-community/)
-- [Contributors](06-community/contributors.md)
-- [Case studies](06-community/case-studies.md)
-- [FAQ](06-community/faq.md)
+### 7. [Scripts](scripts/)
+- [Enable optimized embeddings](scripts/enable-optimized-embeddings.sh)
+- [Cost calculator](scripts/cost-calculator.py)
+- [Task complexity analyzer](scripts/analyze-task-complexity.py)
 
 ---
 
-## 🛠️ Ready-to-Use Configs
+## 🚀 Quick Wins (Start Here)
 
-All configs are tested in production. Copy, paste, restart.
+If you're just getting started optimizing, these are the highest ROI changes:
 
-- [`embeddings-optimized.json`](configs/embeddings-optimized.json) — Batch API + debounce
-- [`model-routing.json`](configs/model-routing.json) — Cheap heartbeats, quality main
-- [`context-pruning.json`](configs/context-pruning.json) — TTL + limits
-- [`full-optimized.json`](configs/full-optimized.json) — All-in-one
+### 1. **Enable Batch Embeddings** (5 min, $0 → works)
+```bash
+bash scripts/enable-optimized-embeddings.sh
+```
+**Impact:** Fixes blocking issues, enables memory search, minimal cost increase
+
+### 2. **Switch Heartbeats to Nano** (10 min, 95% cost reduction)
+- Heartbeats don't need Sonnet—they just check if something needs attention
+- Switch to `groq-fast` or similar Nano model
+- **Savings:** ~$15/month if you poll every 30 minutes
+
+### 3. **Audit Your Task Types** (30 min, prevents blanket downgrade mistakes)
+```bash
+python3 scripts/analyze-task-complexity.py
+```
+**Reality check:** In my case, only 25-33% of tasks could use Haiku. Don't blindly downgrade.
+
+### 4. **Implement Model Routing** (1h, 15-20% cost reduction)
+- Use `configs/model-routing-rules.json` as a starting point
+- Route by task type: heartbeats → Nano, editorial → Sonnet, chat → Mistral Large
+- **Savings:** $12-18/month without quality loss
+
+### 5. **Optimize Cron Sessions** (1h, isolated + task-specific models)
+- Use `sessionTarget: isolated` for background jobs
+- Pick model based on task complexity (not one-size-fits-all)
+- Example: SEO reports → Opus 4.6 (needs deep analysis), simple checks → Haiku
+- **Savings:** $8-12/month by not running Sonnet for trivial tasks
+
+---
+
+## 💡 Key Principles
+
+### 1. **Cost Optimization ≠ Blanket Downgrade**
+"Use Haiku for everything" sounds great until your editorial content sounds robotic, your task prioritization misses nuance, or your community responses feel generic.
+
+**Better approach:** Match model to task complexity.
+
+### 2. **Measure Twice, Optimize Once**
+Before changing models:
+1. Audit your actual tasks (not hypothetical ones)
+2. Test model changes on non-critical workflows first
+3. Monitor quality + cost for 1-2 weeks
+4. Roll out gradually
+
+**My mistake:** I assumed Haiku would handle 80% of tasks. Reality: 25-33%. Measuring first would have saved me hours of testing.
+
+### 3. **Embeddings Are Not Optional at Scale**
+Memory search is what makes OpenClaw useful beyond 50-100 files. The cost is negligible compared to the value.
+
+**My setup:** OpenAI text-embedding-3-small, Batch API, 30s debounce, lazy indexing.  
+**Cost:** ~$0.003 one-time indexing, then cached.  
+**Value:** Instant recall across 38 files, 382 chunks, 0 failures.
+
+### 4. **Heartbeats Should Be Cheap (But Functional)**
+Polling every 30 minutes with Sonnet = $45/month just for "nothing to report" responses.
+
+**Solution:** Rotating heartbeat coordinator (Nano model) that spawns Sonnet subagents only when action is needed.
+
+**Savings:** $30-40/month.
+
+### 5. **Production = Boring (On Purpose)**
+The best production systems are predictable, monitored, and boring.
+
+- ✅ Crons run at the same time daily
+- ✅ Errors send alerts (not silent failures)
+- ✅ Cost spikes trigger notifications
+- ✅ Task assignments follow clear rules
+
+**Anti-pattern:** Ad-hoc "try this model" experiments in production. Test in isolated sessions first.
+
+---
+
+## 🛠️ Tech Stack (My Setup)
+
+- **OpenClaw Runtime:** agent=main, host=VPS srv1301687
+- **Models:** Sonnet 4.5 (primary), Opus 4.6 (crons), Mistral Large 2512 (LinkedIn), Haiku (simple tasks)
+- **Embeddings:** OpenAI text-embedding-3-small (Batch API enabled)
+- **Task Management:** NocoDB (99 active tasks)
+- **Automation:** n8n (3 instances: dev, prod, cloud)
+- **Messaging:** Telegram (main), Discord (communities)
+- **Content:** WordPress (cristiantala.com), Listmonk (newsletters), Late API (social scheduling)
+- **Infrastructure:** Caddy reverse proxy, Docker, Cloudflare DNS
+
+---
+
+## 📖 How to Use This Guide
+
+### If you're just starting OpenClaw in production:
+1. Read [Introduction](docs/01-introduction.md)
+2. Follow [Quick Wins](#-quick-wins-start-here) (2-3 hours)
+3. Implement [Cost Optimization](docs/02-cost-optimization.md) gradually (1-2 weeks)
+
+### If you're already running but costs are high:
+1. Run [cost-calculator.py](scripts/cost-calculator.py) to baseline current spend
+2. Read [Case 5: Why Haiku Failed](cases/05-why-haiku-failed.md) (avoid my mistakes)
+3. Implement [Model Routing](configs/model-routing-rules.json)
+
+### If you're optimizing for performance:
+1. Start with [Performance Tuning](docs/03-performance-tuning.md)
+2. Read [Production Patterns](docs/04-production-patterns.md)
+3. Check [Real-World Cases](cases/) for patterns similar to your use case
 
 ---
 
 ## 🤝 Contributing
 
-This guide evolves with the community. Contributions welcome:
+This guide evolves based on real production feedback. If you're running OpenClaw at scale and have lessons to share:
 
-- **Case studies:** Share your production setup and results
-- **Optimizations:** What worked for you that isn't covered here?
-- **Corrections:** Found an error or outdated info? PR it
-- **Questions:** Not sure about something? Open an issue
+1. **Case Studies:** Share your automation workflow (anonymized OK)
+2. **Optimizations:** New cost-saving techniques or performance patterns
+3. **Configs:** Production-tested configurations that others can use
+4. **Bug Fixes:** Corrections or improvements to existing docs
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+**Preferred format:** Open an issue first to discuss, then PR with changes.
+
+**Community submissions welcome** — if your case study gets merged, you'll be credited as a contributor.
 
 ---
 
-## 📖 Related Content
+## 📬 Contact & Community
 
-### Blog Posts
-- [Running OpenClaw in Production: 6-Month Review](https://cristiantala.com/openclaw-production-review/)
-- [Why "Just Use Haiku" Isn't Always the Answer](https://cristiantala.com/openclaw-haiku-vs-sonnet/)
-- [Honest Cost Optimization: What Actually Worked](https://cristiantala.com/openclaw-optimization-honest/)
+- **Author:** Cristian Tala Sánchez
+  - Exit founder, angel investor, startup mentor
+  - Blog: [cristiantala.com](https://cristiantala.com)
+  - LinkedIn: [linkedin.com/in/ctala](https://linkedin.com/in/ctala)
+  - Twitter: [@naitus](https://twitter.com/naitus)
 
-### Other Resources
-- [OpenClaw Docs](https://docs.openclaw.ai)
-- [OpenClaw GitHub](https://github.com/openclaw/openclaw)
-- [Community Discord](https://discord.com/invite/clawd)
+- **Community:** Join the discussion
+  - OpenClaw Discord: [discord.com/invite/clawd](https://discord.com/invite/clawd)
+  - Submit case studies: [Open an issue](https://github.com/ctala/openclaw-production-guide/issues/new)
 
 ---
 
 ## 📄 License
 
-MIT © [Cristian Tala](https://cristiantala.com)
-
-Use this however helps you. Attribution appreciated but not required.
-
----
-
-## ⭐ If This Helps You
-
-Consider:
-- ⭐ Starring the repo (helps others find it)
-- 🐦 Sharing on social (tag [@cristiantalasanchez](https://twitter.com/cristiantalasanchez))
-- 📝 Writing a case study (add your production setup to [06-community](06-community/))
-- 💬 Joining discussions (issues/PRs welcome)
+MIT License — feel free to use, adapt, and share. Attribution appreciated.
 
 ---
 
 ## 🙏 Acknowledgments
 
-Built on research from:
-- [Apiyi OpenClaw Cost Guide](https://help.apiyi.com/en/openclaw-token-cost-optimization-guide-en.html)
-- [Running OpenClaw Without Burning Money (Gist)](https://gist.github.com/digitalknk/ec360aab27ca47cb4106a183b2c25a98)
-- [OpenClaw community discussions](https://github.com/openclaw/openclaw/discussions)
-
-And countless hours of production testing, mistakes, and iteration.
+- **OpenClaw Team** — for building an incredible agent framework
+- **Community Contributors** — for sharing real-world patterns and case studies
+- **Early Readers** — for feedback that shaped this guide
 
 ---
 
-**Last updated:** 2026-02-18  
-**Author:** [Cristian Tala](https://cristiantala.com) | [LinkedIn](https://linkedin.com/in/ctala) | [Twitter](https://twitter.com/cristiantalasanchez)  
-**Status:** 🟢 Active (updated weekly)
+**Last Updated:** 2026-02-18  
+**Version:** 1.0.0  
+**Production Runtime:** 60+ days, 38 files indexed, 99 active tasks, 12 automated workflows
