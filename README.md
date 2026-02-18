@@ -83,9 +83,12 @@ This guide distills **what actually works** when cost, quality, and reliability 
 ### 5. [Real-World Cases](cases/)
 - [Case 1: Skool Community Automation](cases/01-skool-automation.md) — 93.75% accuracy, inline buttons workflow
 - [Case 2: LinkedIn Response System](cases/02-linkedin-responses.md) — Unipile API + Mistral Large 2512
-- [Case 3: Newsletter Sync (Listmonk)](cases/03-newsletter-sync.md) — 1,923 subscribers, automated campaigns
+- [Case 3: Newsletter Sync (Listmonk)](cases/03-newsletter-sync.md) — 1,923 subscribers, $348/year saved
 - [Case 4: SEO Weekly Reports](cases/04-seo-weekly-reports.md) — Serpstat API + NocoDB tracking
 - [Case 5: Why Haiku Failed](cases/05-why-haiku-failed.md) — Real task analysis, honest assessment
+- [Case 6: Task Management (NocoDB)](cases/06-task-management-nocodb.md) — 99 active tasks, daily AI optimization
+- [Case 7: Infrastructure (Docker + Caddy)](cases/07-infrastructure-docker-caddy.md) — 8 services, wildcard SSL, $552/year saved
+- [Case 8: n8n Workflow Automation](cases/08-n8n-workflow-automation.md) — 20+ workflows, 15 hours/week saved
 
 ### 6. [Ready-to-Use Configs](configs/)
 - [Optimized embeddings config](configs/embeddings-optimized.json)
