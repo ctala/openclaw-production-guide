@@ -260,6 +260,17 @@ This guide evolves based on real production feedback. If you're running OpenClaw
 
 ---
 
+## 📄 Documentation
+
+- **[CHANGELOG.md](CHANGELOG.md)** — Version history and release notes
+- **README.md** — This file (main index)
+- **docs/** — Deep-dive guides
+- **cases/** — Real-world case studies
+- **configs/** — Ready-to-use configurations
+- **scripts/** — Helper scripts and tools
+
+---
+
 ## 📄 License
 
 MIT License — feel free to use, adapt, and share. Attribution appreciated.
