@@ -20,19 +20,26 @@ Running OpenClaw in production is different from running it as a toy project. Th
 
 ## 📊 Results from Production
 
-**Before optimization:**
+**Before optimization (Jan 2026):**
 - ~$90/month (Sonnet everywhere)
+- Context: 85KB bootstrap (21,400 tokens)
 - Embeddings disabled (batch API blocking)
 - Manual task management
-- Inconsistent model selection
+- Single monolithic agent
 
-**After optimization:**
-- ~$70/month (22% reduction)
+**After optimization (Feb 2026):**
+- ~$45/month (50% reduction) 🎯
+- Context: 27KB bootstrap (6,472 tokens, -69.8%)
 - Embeddings active (382 chunks, 0 failures, Batch API enabled)
 - Automated task prioritization (Opus 4.6 cron @ 05:30 AM)
+- Multi-agent architecture (n8n-specialist operational)
 - Model routing based on task complexity
 
-**Key insight:** The biggest savings came from **strategic model selection** (not blanket downgrading) and **optimizing heartbeats → Nano** (95% cost reduction for background checks).
+**Key insights:**
+1. **Context optimization = biggest win** — $135/month savings from memory archival alone
+2. **Strategic model selection > blanket downgrading** — Haiku failed 67% of tasks
+3. **Multi-agent architecture** — Haiku + 5KB context ≈ Sonnet + 27KB context (4x cheaper)
+4. **Heartbeats → Nano** — 95% cost reduction for background checks
 
 ---
 
@@ -80,7 +87,19 @@ This guide distills **what actually works** when cost, quality, and reliability 
 - **Error Handling** — Graceful degradation, retry logic
 - **Monitoring** — What to track (costs, latency, failure rates)
 
-### 5. [Real-World Cases](cases/)
+### 5. [Memory Optimization](docs/05-memory-optimization.md) 🆕
+- **Context Bloat Analysis** — MEMORY.md = 48% of bootstrap (40KB/85KB)
+- **Layered Memory Architecture** — Working memory vs Archive
+- **Automated Archival** — Nightly optimization skill
+- **Real Results** — 21,400 → 6,500 tokens (-69.8%), $135/month savings
+
+### 6. [Multi-Agent Architecture](docs/06-multi-agent-architecture.md) 🆕
+- **Specialized Sub-Agents** — n8n-specialist, content-creator, wordpress-publisher
+- **Context Efficiency** — 5KB focused > 27KB generic
+- **Cost Savings** — Haiku + small context ≈ Sonnet + large context (4x cheaper)
+- **Real Results** — n8n-specialist operational, production-ready workflows
+
+### 7. [Real-World Cases](cases/)
 - [Case 1: Skool Community Automation](cases/01-skool-automation.md) — 93.75% accuracy, inline buttons workflow
 - [Case 2: LinkedIn Response System](cases/02-linkedin-responses.md) — Unipile API + Mistral Large 2512
 - [Case 3: Newsletter Sync (Listmonk)](cases/03-newsletter-sync.md) — 1,923 subscribers, $348/year saved
@@ -89,8 +108,9 @@ This guide distills **what actually works** when cost, quality, and reliability 
 - [Case 6: Task Management (NocoDB)](cases/06-task-management-nocodb.md) — 99 active tasks, daily AI optimization
 - [Case 7: Infrastructure (Docker + Caddy)](cases/07-infrastructure-docker-caddy.md) — 8 services, wildcard SSL, $552/year saved
 - [Case 8: n8n Workflow Automation](cases/08-n8n-workflow-automation.md) — 20+ workflows, 15 hours/week saved
+- **[Case 9: Skool Member Validation](cases/09-skool-member-validation.md) 🆕** — LinkedIn identity verification, "Sky is the limit"
 
-### 6. [Ready-to-Use Configs](configs/)
+### 8. [Ready-to-Use Configs](configs/)
 - [Optimized embeddings config](configs/embeddings-optimized.json)
 - [Model routing rules](configs/model-routing-rules.json)
 - [Heartbeat templates](configs/heartbeat-templates.md)
@@ -254,6 +274,10 @@ MIT License — feel free to use, adapt, and share. Attribution appreciated.
 
 ---
 
-**Last Updated:** 2026-02-18  
-**Version:** 1.0.0  
-**Production Runtime:** 60+ days, 38 files indexed, 99 active tasks, 12 automated workflows
+**Last Updated:** 2026-02-19  
+**Version:** 1.1.0  
+**Production Runtime:** 60+ days, 38 files indexed, 99 active tasks, 12 automated workflows  
+**Recent Additions:**
+- Memory Optimization guide (-69.8% context)
+- Multi-Agent Architecture (n8n-specialist operational)
+- Skool Member Validation case study (LinkedIn identity verification)
