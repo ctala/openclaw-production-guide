@@ -132,7 +132,7 @@ Human reads response, approves or asks follow-up
 ### The Orchestration Pattern
 
 ```
-Main Agent (Opus) receives complex request
+Main Agent (Sonnet) receives complex request
   ↓
 Decompose into domain-specific subtasks
   ↓
@@ -233,7 +233,7 @@ All models tested on identical 3-agent runs (Growth Hacker + Campaign Builder + 
 
 **Recommended default: Sonnet 4.6** (Anthropic) — best cost/quality ratio at $1.20/month.  
 **Tier 2 alternative: Gemini 2.5 Pro** — same quality bracket as Sonnet at $0.40/month less.  
-**Upgrade to Opus 4.6** when: 3+ agents in parallel, or strategic decisions are at stake.  
+Note: Opus 4.6 is available for very complex scenarios but in practice Sonnet handles 95% of orchestration needs.  
 **Important: Mistral Large is an excellent daily default model** — but do not confuse this with orchestration capability. At 7/10 synthesis quality it works for simple 2-agent chains; it breaks down in multi-dependency scenarios.
 
 ---

@@ -80,7 +80,7 @@ Sub-Agent: wordpress-publisher
 **Setup:**
 - Created: 2026-02-18
 - Workspace: `agents/n8n-specialist/`
-- Model: Haiku 4.5 (primary), Gemini Pro Low, Opus 4.6 (fallbacks)
+- Model: Sonnet 4.6 (orchestrator), Mistral Large 2512 (daily default)
 - Context: ~5KB (vs 27KB main)
 
 **Test workflow generation:**
@@ -659,7 +659,7 @@ All models tested on identical 3-agent runs. Scored on conflict detection, cross
 | Groq Llama 3.3 70B | Groq | 3.0/10 | $0.0001 | 88ms | $0.01 | ❌ Speed only — too shallow for orchestration |
 
 **Default:** Sonnet 4.6. **Tier 2 alternative:** Gemini 2.5 Pro (same quality bracket, $0.40/month cheaper).  
-**Upgrade to Opus** when: 3+ agents in parallel, or strategic decisions are at stake.  
+Note: In practice, Sonnet handles 95% of orchestration. Opus is overkill for most use cases.  
 **Note on Mistral Large:** Excellent as your daily default chat model — but this is a distinct role from orchestrator. Don't conflate them.
 
 ---
@@ -722,7 +722,7 @@ Human decision needed: run WCAG fix + campaign prep in parallel, or sequential?
 |-------|-------|----------|------|
 | **Orchestrator (default)** | Sonnet 4.6 | Anthropic | Best cost/quality for synthesis — $1.20/month at 20 runs |
 | **Orchestrator (alt)** | Gemini 2.5 Pro | Google | Same quality tier, $0.40/month cheaper — good for provider diversity |
-| **Orchestrator (complex)** | Opus 4.6 | Anthropic | 3+ agents or strategic decisions — $2.40/month, worth it |
+| **Orchestrator (all scenarios)** | Sonnet 4.6 | Anthropic | Handles 95% of orchestration at $1.20/month |
 | **Specialist sub-agents** | Sonnet 4.6 | Anthropic | Domain quality required; Haiku tested and confirmed insufficient |
 | **Simple data sub-tasks** | Haiku 4.5 | Anthropic | Fetch/format/extract within a sub-agent — no reasoning needed |
 | **Heartbeats** | Groq Llama 3.3 70B | Groq | Boolean checks, 88ms, near-free — do not over-engineer |
