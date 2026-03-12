@@ -31,8 +31,8 @@
 
 ```
 1. Develop locally
-   /home/moltbot/clawd/lean-ctas/
-   /home/moltbot/clawd/lean-redirects/
+   ~/openclaw-workspace/lean-ctas/
+   ~/openclaw-workspace/lean-redirects/
    ↓
 2. Version with GitHub tags
    git tag v2.1.0 && git push origin v2.1.0
@@ -58,7 +58,7 @@
 
 | Component | Tool | Notes |
 |-----------|------|-------|
-| Local dev | `/home/moltbot/clawd/lean-ctas/` | PHP + standard WP plugin structure |
+| Local dev | `~/openclaw-workspace/lean-ctas/` | PHP + standard WP plugin structure |
 | Version control | GitHub (`ctala/lean-ctas`, `ctala/lean-redirects`) | Tags = releases |
 | Distribution | Cloudflare R2 (`assets.cristiantala.com/tools/`) | CDN-hosted zips, free tier |
 | Deployment (SSH) | SFTP via `lftp` or `scp` | Rocket.net (IP whitelisted) |
@@ -269,7 +269,7 @@ Instead of emailing zips or storing in git:
 
 ```bash
 # Build zip
-cd /home/moltbot/clawd/lean-ctas
+cd ~/openclaw-workspace/lean-ctas
 zip -r lean-ctas-v2.1.0.zip lean-ctas/ --exclude "*.git*" --exclude "node_modules/*"
 
 # Upload to R2

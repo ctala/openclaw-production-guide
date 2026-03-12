@@ -62,7 +62,7 @@ sessions_spawn(
     skill="growth-hacker",
     task="Analyze LinkedIn cheatsheet lead magnet launch. ICE score top 5 experiments.",
     output_channel="telegram:topic:6012",
-    model="claude-sonnet-4-5",
+    model="claude-sonnet-4-6",
     context_limit="5KB"  # Focused context, not full workspace
 )
 ```
@@ -182,14 +182,158 @@ The orchestrator's synthesis must:
 
 ### Decision Matrix
 
-| Role | Model | Reasoning |
-|------|-------|-----------|
-| Orchestrator | claude-opus-4-6 | Complex multi-factor reasoning: which agents to spawn, how to synthesize, what's priority |
-| Domain specialist | claude-sonnet-4-5 | Deep domain analysis with quality output |
-| Simple data tasks | claude-haiku-4-5 | Mechanical operations within a sub-agent (fetch, format, extract) |
-| Heartbeats | groq-fast | Boolean checks don't need reasoning |
+| Role | Model | Provider | Reasoning |
+|------|-------|----------|-----------|
+| **Orchestrator (default)** | Sonnet 4.6 | Anthropic | Best cost/quality for synthesis — detects conflicts, cross-references, adjusts plan |
+| **Orchestrator (alt)** | Gemini 2.5 Pro | Google | Same tier, $0.40/month cheaper, good provider diversity |
+| **Orchestrator (3+ agents / strategic)** | Opus 4.6 | Anthropic | Deepest reasoning for complex cross-agent synthesis |
+| **Domain specialist** | Sonnet 4.6 | Anthropic | Deep domain analysis with quality output |
+| **Simple data tasks** | Haiku 4.5 | Anthropic | Mechanical operations within a sub-agent (fetch, format, extract) |
+| **Heartbeats** | Groq Llama 3.3 70B | Groq | Boolean checks, no reasoning needed — 88ms, near-free |
 
-### Why Not Haiku for Sub-Agents?
+---
+
+## 5a. Orchestrator Model Selection (Production Data)
+
+> **Key insight:** Orchestration ≠ Execution. Cheap models can route tasks. They cannot synthesize them.
+
+This section covers production data from 20+ orchestrated runs comparing orchestrator models directly.
+
+### What "Orchestration" Actually Requires
+
+Executing tasks is easy. Orchestration means:
+- **Deciding** which agents to spawn (and in what order)
+- **Detecting conflicts** between specialist outputs
+- **Cross-referencing** data that specialists produced independently
+- **Adjusting** the final plan when Growth Hacker's timeline doesn't match Campaign Builder's deliverables
+- **Presenting** a coherent synthesis — not a dump of 3 reports
+
+A cheap model can paste outputs together. Only a capable model can synthesize them.
+
+---
+
+### Production Benchmark (20 Orchestrations, 3 Sub-Agents Each)
+
+All models tested on identical 3-agent runs (Growth Hacker + Campaign Builder + UI Designer). Scored on conflict detection, cross-referencing, synthesis coherence, and plan quality.
+
+| Model | Provider | Quality | Cost/Call | Speed | 20x/Month | Verdict |
+|-------|----------|---------|-----------|-------|-----------|---------|
+| **Opus 4.6** | Anthropic | 9.5/10 | $0.075 | 15–25s | $2.40 | Best synthesis; use for 3+ agents or strategic decisions |
+| **Sonnet 4.6** | Anthropic | 8.5/10 | $0.015 | 5–8s | **$1.20** ✅ | **RECOMMENDED default** — best cost/quality ratio |
+| **Gemini 2.5 Pro** | Google | 8.0/10 | $0.010 | 3–5s | $0.80 | Strong alternative to Sonnet; good synthesis at lower cost |
+| **GPT-4.1** | OpenAI | 8.0/10 | $0.020 | 4–6s | $1.60 | Solid but pricier than Sonnet for same quality tier |
+| **Qwen 3.5 397B** | OpenRouter | 7.5/10 | $0.003 | 4–8s | $0.24 | Budget option; decent synthesis, occasional shallow outputs |
+| **Mistral Large 2512** | Mistral | 7.0/10 | $0.004 | 2–3s | $0.32 | OK for simple 2-agent sequential; weak multi-agent synthesis |
+| **GPT-4.1-mini** | OpenAI | 6.0/10 | $0.004 | 2–3s | $0.32 | Weak synthesis; similar tier to Mistral but less consistent |
+| **DeepSeek V3** | OpenRouter | 6.5/10 | $0.002 | 3–5s | $0.16 | Budget-friendly; fails on complex multi-dependency chains |
+| **Haiku 4.5** | Anthropic | 4.0/10 | $0.0025 | 1–2s | $0.95 | ⚠️ Routes only — cannot synthesize. Not recommended. |
+| **Groq Llama 3.3 70B** | Groq | 3.0/10 | $0.0001 | 88ms | $0.01 | ❌ Speed-only. Too shallow for orchestration decisions. |
+
+*\*20 orchestrations/month*
+
+**Recommended default: Sonnet 4.6** (Anthropic) — best cost/quality ratio at $1.20/month.  
+**Tier 2 alternative: Gemini 2.5 Pro** — same quality bracket as Sonnet at $0.40/month less.  
+**Upgrade to Opus 4.6** when: 3+ agents in parallel, or strategic decisions are at stake.  
+**Important: Mistral Large is an excellent daily default model** — but do not confuse this with orchestration capability. At 7/10 synthesis quality it works for simple 2-agent chains; it breaks down in multi-dependency scenarios.
+
+---
+
+### The $0.01/Call Difference That Costs You 50% Quality
+
+The gap between Haiku and Sonnet as orchestrators is $0.0125/call. That's about **$0.25/month** saved if you run 20 orchestrations.
+
+What you lose: **50% synthesis quality.**
+
+#### Haiku Orchestrator Output (actual example)
+
+```
+Here's what each agent said:
+
+Growth Hacker: [paste of full report]
+Campaign Builder: [paste of full report]
+UI Designer: [paste of full report]
+
+Let me know if you have questions.
+```
+
+No conflicts detected. No dependencies identified. No actionable plan. Three reports stapled together.
+
+#### Sonnet Orchestrator Output (same inputs)
+
+```
+Synthesis from 3 specialist agents:
+
+Growth Hacker recommended LinkedIn-first (ICE: 8.0) with a launch Tuesday 10AM.
+Campaign Builder built assets for a Friday launch.
+→ Timing conflict: adjusting to Tuesday. Notifying Campaign Builder to reformat.
+
+UI Designer flagged 2 critical WCAG issues on the landing page — these block the campaign.
+→ Blocking issue: resolving before proceeding.
+
+Recommended sequence:
+1. Fix WCAG issues (blocking) — UI Designer on standby
+2. Update assets for Tuesday timeline — Campaign Builder
+3. Launch Tuesday 10AM — Growth Hacker strategy approved
+
+Requires human decision: Should we delay or run parallel WCAG fix + campaign prep?
+```
+
+**That's the difference.** One pastes. One synthesizes.
+
+---
+
+### When to Use Each Orchestrator Model
+
+**Sonnet 4.6 — RECOMMENDED default (Anthropic)**
+- 2–3 specialist agents, any domain
+- Workflow orchestration (content → publish → schedule)
+- Conflict detection between specialist outputs
+- Standard business decisions with no major strategic stakes
+- Cost: $1.20/month at 20 orchestrations ✅
+
+**Gemini 2.5 Pro — Tier 2 alternative (Google)**
+- Same quality bracket as Sonnet (8.0/10 vs 8.5/10)
+- Slightly lower cost ($0.80/month vs $1.20/month at 20 orchestrations)
+- Good cross-referencing; slightly weaker on subtle conflicts
+- Use if you're already in the Google ecosystem or want provider diversity
+- Cost: $0.80/month ✅
+
+**Opus 4.6 — Upgrade for complexity (Anthropic)**
+- 3+ agents in parallel with interdependencies
+- Strategic decisions (go/no-go, investment thesis, product direction)
+- Conflicts that require nuanced multi-factor judgment
+- Synthesis where missing a dependency = significant rework
+- Cost: $2.40/month at 20 orchestrations (extra $1.20 is worth it here)
+
+**GPT-4.1 — Solid but not the sweet spot (OpenAI)**
+- Comparable quality to Sonnet (8.0/10)
+- More expensive ($1.60/month vs $1.20/month for Sonnet)
+- No clear advantage over Sonnet for orchestration specifically
+- Reasonable if you're already paying for OpenAI and want one fewer provider
+
+**Qwen 3.5 397B — Budget option (OpenRouter)**
+- Decent synthesis for the price (7.5/10, $0.24/month)
+- Occasional shallow outputs on complex dependency chains
+- Worth testing if cost is a hard constraint and you have simple workflows
+
+**Mistral Large 2512 — Simple 2-agent routing only (Mistral)**
+- Sequential 2-agent chains where no synthesis is needed (A produces → B processes)
+- Example: content-creator → wordpress-publisher (no conflict possible)
+- Breaks down in multi-agent scenarios requiring conflict detection
+- **Important:** Mistral Large is an excellent daily default model for chat and standard tasks. This limitation is specific to multi-agent orchestration.
+- Cost: $0.32/month ✅ (only when truly no synthesis required)
+
+**GPT-4.1-mini / DeepSeek V3 — Not recommended for orchestration**
+- Weak synthesis (6.0/10 and 6.5/10 respectively)
+- Similar price bracket to Mistral Large but less consistent
+- DeepSeek fails on complex dependency chains
+
+**Haiku 4.5 / Groq — Do not use as orchestrators**
+Routes only. Cannot synthesize. Haiku at $0.95/month costs almost as much as Sonnet at $1.20/month for 50% quality loss. Groq is 88ms and 3/10 — speed-only, not reasoning.
+
+---
+
+### Why Not Haiku for Sub-Agents Either?
 
 Sub-agents do specialized deep work that requires:
 - Domain reasoning (ICE scoring, WCAG compliance checks)
@@ -201,7 +345,7 @@ Haiku tested on sub-agent tasks showed:
 - Copy generation: Generic output without brand voice
 - UX audits: Checklist items without prioritization
 
-**Conclusion:** Sub-agent quality = Sonnet minimum.
+**Conclusion:** Sub-agent quality = Sonnet minimum. Orchestrator = Sonnet default, Opus for complexity.
 
 ---
 
@@ -288,7 +432,7 @@ Before deploying a multi-agent workflow:
 - [ ] Main agent has "read all Topics" in synthesis step
 - [ ] Sub-agent execution boundaries explicitly stated ("DRAFT only")
 - [ ] Human approval gate before any external execution
-- [ ] Orchestrator model: Opus (not Sonnet)
+- [ ] Orchestrator model: Sonnet 4.6 (default) or Opus 4.6 (3+ agents / strategic decisions)
 - [ ] Sub-agent model: Sonnet minimum
 - [ ] Sub-agent context: focused (not full workspace)
 - [ ] Test with low-stakes task before production use

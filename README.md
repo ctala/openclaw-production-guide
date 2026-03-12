@@ -70,9 +70,9 @@ This guide distills **what actually works** when cost, quality, and reliability 
 - Results and lessons learned
 
 ### 2. [Cost Optimization](docs/02-cost-optimization.md)
-- **Model Selection Strategy** — Why Haiku failed 67% of my tasks
+- **Model Selection Strategy** — Mistral Large default, Sonnet auto-upgrade, why Haiku failed 67% of tasks
 - **Embeddings Optimization** — OpenAI Batch API + debounce + lazy indexing
-- **Heartbeat Efficiency** — Rotating checks + Nano for background jobs
+- **Heartbeat Efficiency** — Groq for background checks (95% cost reduction)
 - **Cron Strategy** — Isolated sessions with task-specific models
 
 ### 3. [Performance Tuning](docs/03-performance-tuning.md)
@@ -83,7 +83,7 @@ This guide distills **what actually works** when cost, quality, and reliability 
 
 ### 4. [Production Patterns](docs/04-production-patterns.md)
 - **Multi-Channel Routing** — Telegram Topics, Discord channels, email
-- **Subagent Orchestration** — When to spawn isolated sessions
+- **Subagent Orchestration** — When to spawn, orchestrator model selection
 - **Error Handling** — Graceful degradation, retry logic
 - **Monitoring** — What to track (costs, latency, failure rates)
 
@@ -212,7 +212,7 @@ The best production systems are predictable, monitored, and boring.
 ## 🛠️ Tech Stack (My Setup)
 
 - **OpenClaw Runtime:** agent=main, host=VPS srv1301687
-- **Models:** Sonnet 4.5 (primary), Opus 4.6 (crons), Mistral Large 2512 (LinkedIn), Haiku (simple tasks)
+- **Models:** Mistral Large 2512 (default), Sonnet 4.6 (editorial + community), Opus 4.6 (crons + analysis), Groq (heartbeats), Haiku 4.5 (simple mechanical tasks only)
 - **Embeddings:** OpenAI text-embedding-3-small (Batch API enabled)
 - **Task Management:** NocoDB (99 active tasks)
 - **Automation:** n8n (3 instances: dev, prod, cloud)
@@ -295,6 +295,22 @@ MIT License — feel free to use, adapt, and share. Attribution appreciated.
 
 ---
 
+## 🆕 What's New in v1.3.0 (March 2026)
+
+### Fixes & Updates
+- **Fixed 9 broken internal links** across docs and configs
+- **Updated model names:** Sonnet 4.5 → 4.6, Opus 4.5 → 4.6 everywhere
+- **Default model is now Mistral Large 2512** (not Haiku) — reflects actual production setup
+- **Created 3 missing docs:** `02-cost-optimization.md`, `03-performance-tuning.md`, `04-production-patterns.md`
+- **Genericized internal paths** (removed server-specific paths for public consumption)
+- **Expanded orchestrator model benchmark** to 10 models across 5 providers (Anthropic, Google, OpenAI, Mistral, OpenRouter, Groq)
+- **Added ORCHESTRATOR MODEL SELECTION section** to multi-agent docs with full cost/quality data
+
+### Key New Insight: Orchestrator Model Matters
+Sonnet 4.6 is the recommended default orchestrator (8.5/10, $1.20/month). Gemini 2.5 Pro is a strong tier-2 alternative ($0.80/month). Haiku at 4/10 cannot synthesize multi-agent outputs — it only routes. The $0.25/month saved is not worth the 50% quality loss.
+
+---
+
 ## 🆕 What's New in v1.2.0 (March 2026)
 
 ### New Case Studies
@@ -318,7 +334,7 @@ MIT License — feel free to use, adapt, and share. Attribution appreciated.
 ---
 
 **Last Updated:** 2026-03-12  
-**Version:** 1.2.0  
+**Version:** 1.3.0  
 **Production Runtime:** 90+ days, 45+ files indexed, 130+ active tasks, 20+ automated workflows  
 **Recent Additions:**
 - Multi-Agent Orchestration case (4 new cases total)

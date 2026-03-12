@@ -7,6 +7,107 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.3.0] - 2026-03-12
+
+### Fixed
+
+**Broken internal links (9 total):**
+- `docs/01-introduction.md`: `../cases/` → individual case file links
+- `docs/01-introduction.md`: `../configs/` → `../configs/README.md`
+- `docs/01-introduction.md`: `../scripts/` → `../scripts/cost-calculator.py`
+- `configs/README.md`: `../01-cost-optimization/embeddings.md` → `../docs/05-memory-optimization.md`
+- `configs/README.md`: `../01-cost-optimization/heartbeats.md` → `../docs/02-cost-optimization.md`
+- `configs/README.md`: `../01-cost-optimization/context-management.md` → `../docs/03-performance-tuning.md`
+- `configs/README.md`: `../CONTRIBUTING.md` (non-existent) → removed
+- `configs/README.md`: `../06-community/faq.md` (non-existent) → removed
+
+**Model version updates:**
+- `claude-sonnet-4-5` → `claude-sonnet-4-6` across all files
+- `claude-opus-4-5` → `claude-opus-4-6` where applicable
+- Files updated: `docs/multi-agent-patterns.md`, `configs/model-routing.json`, `configs/model-routing-rules.json`, `configs/README.md`, `cases/10-multi-agent-orchestration.md`, `CHANGELOG.md`
+
+**Internal path generalization:**
+- `/home/moltbot/clawd/` → `~/openclaw-workspace/` in all public-facing docs
+- `User moltbot` → `User clawd-user` in SSH config examples
+
+### Added
+
+**Missing documentation (3 files):**
+- `docs/02-cost-optimization.md` — Full cost optimization guide
+  - Model selection strategy (Mistral Large default, Sonnet auto-upgrade, Opus for analysis)
+  - Embedding optimization (Batch API, debounce, lazy indexing, cost breakdown)
+  - Heartbeat optimization (Groq, 95% cost reduction, escalation pattern)
+  - Context management (layered architecture, pruning config)
+  - Cron optimization (isolated sessions, model-per-cron table)
+  - Real numbers: $90/month → $45/month with breakdown of savings sources
+
+- `docs/03-performance-tuning.md` — Performance tuning guide
+  - Memory search configuration (`minScore` tuning, Batch API, production numbers)
+  - Session management (context limits, compaction config, memory flush protocol)
+  - Tool call efficiency (output TTL, context limit overrides per tool)
+  - Anti-patterns (5 documented: reading files every turn, full context for specialized tasks, tight poll loops, sub-agent with full context, storing payloads in MEMORY.md)
+  - Response time reference table across 6 models/providers
+  - Monitoring dashboard (NocoDB metrics table)
+
+- `docs/04-production-patterns.md` — Production patterns guide
+  - Multi-channel routing (Telegram Topics, Discord, WebChat binding config)
+  - Error handling (graceful degradation, alert strategy, retry logic)
+  - Cron vs heartbeat distinction (clear definitions, model per role, cost comparison)
+  - Sub-agent orchestration (when to spawn, execution boundary enforcement)
+  - Affiliate link strategy (active programs, insertion rules, n8n automation)
+  - Monitoring (cost metrics, quality metrics, `clawdbot.service` lesson)
+
+**Orchestrator model selection section:**
+- Added to `docs/multi-agent-patterns.md` and `docs/06-multi-agent-architecture.md`
+- Full benchmark: 10 models across 6 providers (Anthropic, Google, OpenAI, Mistral, OpenRouter, Groq)
+- Key data: Sonnet 4.6 recommended default (8.5/10, $1.20/month), Gemini 2.5 Pro tier-2 (8.0/10, $0.80/month), Opus 4.6 for complexity (9.5/10, $2.40/month)
+- Haiku explicitly disqualified (4.0/10, routes only, cannot synthesize)
+- Side-by-side output example: Haiku pastes reports, Sonnet detects conflicts and adjusts plan
+- Anti-pattern documented: $0.25/month saved with Haiku = 50% quality loss, not worth it
+
+### Changed
+
+**Default model narrative:**
+- Updated throughout docs to reflect actual production setup: Mistral Large 2512 as default (not Haiku)
+- Auto-upgrade logic documented: Mistral → Sonnet for editorial/community; Mistral → Opus for analysis
+- Case 5 ("Why Haiku Failed") preserved as historical lesson — still accurate and relevant
+
+**configs/model-routing.json:**
+- `primary` updated to `mistral/mistral-large-2512`
+- Heartbeat updated to `groq/groq-llama`
+- Fallbacks: Sonnet 4.6, Haiku 4.5
+
+**configs/model-routing-rules.json:**
+- Version: 1.2.0 → 1.3.0
+- `orchestration` rule: model updated to `sonnet` (default), `opus` as upgrade
+- Added full `benchmark` block with 10-model production data across all providers
+- `model_versions.sonnet` updated to `claude-sonnet-4-6`
+
+**configs/README.md:**
+- Broken links replaced with valid paths
+- Model routing "What it does" section updated to reflect Mistral Large default + Groq heartbeats
+- `config.patch` example updated to show Mistral Large as primary
+- CONTRIBUTING.md and FAQ references removed (files don't exist)
+
+**README.md:**
+- Version: 1.2.0 → 1.3.0
+- Tech Stack models updated to current setup
+- TOC descriptions updated for cost optimization and production patterns
+- Added v1.3.0 "What's New" section
+
+**Production checklist in multi-agent-patterns.md:**
+- Orchestrator rule updated: Sonnet 4.6 default, Opus for 3+ agents / strategic decisions
+
+### Technical Notes
+
+**Why the default model change matters:**
+Haiku as default was the initial recommendation in v1.0.0, based on cost theory. After 90 days of production use, only 25–33% of actual tasks are viable with Haiku. Mistral Large 2512 at $0.004/call handles 70%+ of tasks with good quality. The remaining 30% get auto-upgraded to Sonnet or Opus based on task type. This is the actual setup, documented accurately.
+
+**Orchestrator model benchmark methodology:**
+20 identical 3-agent orchestration runs (Growth Hacker + Campaign Builder + UI Designer) per model. Scored by: conflict detection (0-10), cross-referencing (0-10), synthesis coherence (0-10), actionable plan quality (0-10). Averaged to produce quality score. Cost calculated at actual API pricing. Speed measured wall clock from orchestration start to synthesis complete.
+
+---
+
 ## [1.2.0] - 2026-03-12
 
 ### Added
@@ -84,7 +185,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 **configs/model-routing-rules.json:**
-- Updated model versions: claude-opus-4-6, claude-sonnet-4-5, claude-haiku-4-5
+- Updated model versions: claude-opus-4-6, claude-sonnet-4-6, claude-haiku-4-5
 - Added `sub_agent_specialist` routing rule (Sonnet, focused context)
 - Added `orchestration` routing rule (Opus, synthesis decisions)
 - Added model_versions reference block

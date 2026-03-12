@@ -22,7 +22,7 @@ Infrastructure issues don't follow a schedule. This document captures the actual
 At approximately 14:30 Chile time, OpenClaw stopped being able to write to disk. All file operations — saving memory, updating MEMORY.md, writing daily logs — failed with:
 
 ```
-Error: EROFS: read-only file system, open '/home/moltbot/clawd/memory/2026-03-05.md'
+Error: EROFS: read-only file system, open '~/openclaw-workspace/memory/2026-03-05.md'
 ```
 
 The service was still running. Session responses worked. But nothing could be written.
@@ -217,7 +217,7 @@ ssh user@srv1301687.hstgr.cloud -p 65002
 # Host hostinger-vps
 #   HostName srv1301687.hstgr.cloud
 #   Port 65002
-#   User moltbot
+#   User clawd-user
 #   IdentityFile ~/.ssh/hostinger_key
 ```
 
@@ -231,7 +231,7 @@ Maintain `~/.ssh/config` for all providers:
 Host vps-main
   HostName srv1301687.hstgr.cloud
   Port 65002
-  User moltbot
+  User clawd-user
   IdentityFile ~/.ssh/hostinger_key
   ServerAliveInterval 60
 
@@ -417,7 +417,7 @@ fi
 
 Add to cron:
 ```
-*/5 * * * * /home/moltbot/clawd/scripts/health-check.sh
+*/5 * * * * ~/openclaw-workspace/scripts/health-check.sh
 ```
 
 ---

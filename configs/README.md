@@ -27,7 +27,7 @@ openclaw gateway config.patch embeddings-optimized.json
 openclaw gateway restart
 ```
 
-[Full guide →](../01-cost-optimization/embeddings.md)
+[Full guide →](../docs/05-memory-optimization.md)
 
 ---
 
@@ -36,13 +36,15 @@ openclaw gateway restart
 **File:** [`model-routing.json`](model-routing.json)
 
 **What it does:**
-- ✅ Sonnet for main work
-- ✅ Haiku for heartbeats
-- ✅ Opus as fallback
+- ✅ Mistral Large 2512 as default (fast, cost-effective)
+- ✅ Groq/LLaMA for heartbeats (95% cheaper than Sonnet)
+- ✅ Sonnet auto-upgrade for editorial and quality-critical tasks
+- ✅ Opus for orchestration and strategic analysis
 
 **Benefit:**
 - 95% reduction in heartbeat costs
-- Quality maintained for main work
+- Quality maintained for editorial and community work
+- Default model is cost-effective without sacrificing quality
 
 **Apply:**
 ```bash
@@ -50,7 +52,7 @@ openclaw gateway config.patch model-routing.json
 openclaw gateway restart
 ```
 
-[Full guide →](../01-cost-optimization/heartbeats.md)
+[Full guide →](../docs/02-cost-optimization.md)
 
 ---
 
@@ -73,7 +75,7 @@ openclaw gateway config.patch context-pruning.json
 openclaw gateway restart
 ```
 
-[Full guide →](../01-cost-optimization/context-management.md)
+[Full guide →](../docs/03-performance-tuning.md)
 
 ---
 
@@ -123,7 +125,7 @@ OpenClaw's `config.patch` merges your changes with existing config.
   "agents": {
     "defaults": {
       "model": {
-        "primary": "anthropic/claude-sonnet-4-5"
+        "primary": "mistral/mistral-large-2512"
       }
     }
   }
@@ -136,7 +138,7 @@ OpenClaw's `config.patch` merges your changes with existing config.
   "agents": {
     "defaults": {
       "heartbeat": {
-        "model": "anthropic/claude-haiku-4-5"
+        "model": "groq/groq-llama"
       }
     }
   }
@@ -149,10 +151,10 @@ OpenClaw's `config.patch` merges your changes with existing config.
   "agents": {
     "defaults": {
       "model": {
-        "primary": "anthropic/claude-sonnet-4-5"
+        "primary": "mistral/mistral-large-2512"
       },
       "heartbeat": {
-        "model": "anthropic/claude-haiku-4-5"
+        "model": "groq/groq-llama"
       }
     }
   }
@@ -213,9 +215,9 @@ Feel free to modify these configs for your use case.
 - Adjust `minScore` (higher = stricter matching)
 
 **Models:**
-- Use different primary model
+- Use different primary model (Mistral Large 2512 is a solid default)
 - Add more fallbacks
-- Use Nano instead of Haiku (even cheaper)
+- Use Groq for heartbeats (even cheaper than Haiku)
 
 **Context:**
 - Adjust TTL (shorter = more aggressive pruning)
@@ -227,8 +229,8 @@ Feel free to modify these configs for your use case.
 
 Have a config that works better? **Submit a PR.**
 
-See [CONTRIBUTING.md](../CONTRIBUTING.md) for guidelines.
+Open an issue on GitHub to discuss first, then submit your changes.
 
 ---
 
-**Questions?** Open an issue or check the [FAQ](../06-community/faq.md).
+**Questions?** Open an issue on [GitHub](https://github.com/ctala/openclaw-production-guide/issues).

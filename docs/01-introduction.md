@@ -50,7 +50,7 @@ I'm Cristian Tala Sánchez—founder, investor, and startup mentor.
 7. **API Integrations** — WordPress, Late API, Unipile, Replicate, etc.
 
 ### Stack
-- **Models:** Sonnet (primary), Opus (crons), Mistral Large (LinkedIn), Haiku (simple tasks)
+- **Models:** Mistral Large 2512 (default), Sonnet 4.6 (editorial + community), Opus 4.6 (crons + analysis), Groq (heartbeats), Haiku (simple mechanical tasks only)
 - **Embeddings:** OpenAI text-embedding-3-small (Batch API)
 - **Task Management:** NocoDB (99 active tasks)
 - **Automation:** n8n (3 instances: dev, prod, cloud)
@@ -105,9 +105,9 @@ I'm Cristian Tala Sánchez—founder, investor, and startup mentor.
 ## What This Guide Covers
 
 ### 1. [Cost Optimization](02-cost-optimization.md)
-- Model selection strategy (when Haiku works, when it doesn't)
+- Model selection strategy (Mistral Large default, Sonnet auto-upgrade, Opus for analysis)
 - Embeddings optimization (Batch API, debounce, lazy indexing)
-- Heartbeat efficiency (Nano model, 95% cost reduction)
+- Heartbeat efficiency (Groq, 95% cost reduction)
 - Cron strategy (isolated sessions, task-specific models)
 
 ### 2. [Performance Tuning](03-performance-tuning.md)
@@ -122,23 +122,21 @@ I'm Cristian Tala Sánchez—founder, investor, and startup mentor.
 - Error handling (graceful degradation, retry logic)
 - Monitoring (cost, latency, failure rates)
 
-### 4. [Real-World Cases](../cases/)
-- Case 1: Skool Community Automation
-- Case 2: LinkedIn Response System
-- Case 3: Newsletter Sync (Listmonk)
-- Case 4: SEO Weekly Reports
-- Case 5: Why Haiku Failed (honest assessment)
+### 4. [Real-World Cases](../cases/01-skool-automation.md)
+- [Case 1: Skool Community Automation](../cases/01-skool-automation.md)
+- [Case 2: LinkedIn Response System](../cases/02-linkedin-responses.md)
+- [Case 3: Newsletter Sync (Listmonk)](../cases/03-newsletter-sync.md)
+- [Case 4: SEO Weekly Reports](../cases/04-seo-weekly-reports.md)
+- [Case 5: Why Haiku Failed (honest assessment)](../cases/05-why-haiku-failed.md)
 
-### 5. [Ready-to-Use Configs](../configs/)
-- Optimized embeddings config
-- Model routing rules
-- Heartbeat templates
-- Cron job examples
+### 5. [Ready-to-Use Configs](../configs/README.md)
+- [Optimized embeddings config](../configs/embeddings-optimized.json)
+- [Model routing rules](../configs/model-routing-rules.json)
+- [Context pruning config](../configs/context-pruning.json)
 
-### 6. [Scripts](../scripts/)
-- enable-optimized-embeddings.sh (one-click setup)
-- cost-calculator.py (project your costs)
-- analyze-task-complexity.py (audit your tasks)
+### 6. [Scripts](../scripts/cost-calculator.py)
+- [enable-optimized-embeddings.sh](../scripts/enable-optimized-embeddings.sh) (one-click setup)
+- [cost-calculator.py](../scripts/cost-calculator.py) (project your costs)
 
 ---
 

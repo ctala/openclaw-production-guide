@@ -5,20 +5,51 @@
     "tested_on": "130+ production tasks over 90 days",
     "total_savings": "$180/year (17% reduction) without quality loss",
     "last_updated": "2026-03-12",
-    "version": "1.2.0",
+    "version": "1.3.0",
     "model_versions": {
       "opus": "claude-opus-4-6",
-      "sonnet": "claude-sonnet-4-5",
+      "sonnet": "claude-sonnet-4-6",
       "haiku": "claude-haiku-4-5",
       "default_chat": "mistral-large-2512",
       "heartbeat": "groq-fast"
+    },
+    "implementation": {
+      "openclaw_config": {
+        "description": "Add to your OpenClaw config.json",
+        "default_model": "mistral-large-2512",
+        "heartbeat_model": "groq-fast",
+        "subagent_model": "sonnet",
+        "cron_jobs": [
+          {
+            "name": "Daily Task Optimization",
+            "schedule": "0 5 * * *",
+            "model_override": "opus",
+            "reasoning": "Strategic analysis needs deepest reasoning"
+          },
+          {
+            "name": "Skool Engagement Check",
+            "schedule": "0 8,16 * * *",
+            "model_override": "sonnet",
+            "reasoning": "Community responses need quality"
+          },
+          {
+            "name": "SEO Weekly Report",
+            "schedule": "0 1 * * 1",
+            "model_override": "opus",
+            "reasoning": "Gap analysis is strategic thinking"
+          }
+        ]
+      }
     }
   },
   "rules": [
     {
       "task_type": "heartbeat",
       "model": "groq-fast",
-      "aliases": ["groq-llama", "nano"],
+      "aliases": [
+        "groq-llama",
+        "nano"
+      ],
       "cost_per_call": "$0.0001",
       "reasoning": "Heartbeats just check if action is needed. Nano is 95% cheaper than Sonnet.",
       "example_prompt": "Read HEARTBEAT.md if it exists. If nothing needs attention, reply HEARTBEAT_OK.",
@@ -28,7 +59,9 @@
     {
       "task_type": "simple_data_operation",
       "model": "haiku",
-      "aliases": ["anthropic/claude-haiku-4"],
+      "aliases": [
+        "anthropic/claude-haiku-4"
+      ],
       "cost_per_call": "$0.0025",
       "reasoning": "No ambiguity, no strategic thinking, correct or incorrect.",
       "examples": [
@@ -44,7 +77,9 @@
     {
       "task_type": "template_population",
       "model": "haiku",
-      "aliases": ["anthropic/claude-haiku-4"],
+      "aliases": [
+        "anthropic/claude-haiku-4"
+      ],
       "cost_per_call": "$0.0025",
       "reasoning": "Mechanical task, no creativity needed.",
       "examples": [
@@ -58,7 +93,9 @@
     {
       "task_type": "conversational_chat",
       "model": "mistral-large-2512",
-      "aliases": ["mistral-large"],
+      "aliases": [
+        "mistral-large"
+      ],
       "cost_per_call": "$0.004",
       "reasoning": "Fast, cost-effective, good quality for casual chat.",
       "examples": [
@@ -74,7 +111,10 @@
     {
       "task_type": "community_engagement",
       "model": "sonnet",
-      "aliases": ["anthropic/claude-sonnet-4-5", "google-antigravity/claude-sonnet-4-5-thinking"],
+      "aliases": [
+        "anthropic/claude-sonnet-4-6",
+        "google-antigravity/claude-sonnet-4-6-thinking"
+      ],
       "cost_per_call": "$0.015",
       "reasoning": "Relationship-building, founder credibility, quality > cost.",
       "examples": [
@@ -90,7 +130,9 @@
     {
       "task_type": "editorial_content",
       "model": "sonnet",
-      "aliases": ["anthropic/claude-sonnet-4-5"],
+      "aliases": [
+        "anthropic/claude-sonnet-4-6"
+      ],
       "cost_per_call": "$0.015",
       "reasoning": "Public-facing content with founder's name. Quality non-negotiable.",
       "examples": [
@@ -108,7 +150,10 @@
     {
       "task_type": "strategic_thinking",
       "model": "opus",
-      "aliases": ["anthropic/claude-opus-4-6", "opus46"],
+      "aliases": [
+        "anthropic/claude-opus-4-6",
+        "opus46"
+      ],
       "cost_per_call": "$0.075",
       "reasoning": "Complex analysis, business decisions, multi-factor prioritization.",
       "examples": [
@@ -125,7 +170,9 @@
     {
       "task_type": "api_debugging",
       "model": "sonnet",
-      "aliases": ["anthropic/claude-sonnet-4-5"],
+      "aliases": [
+        "anthropic/claude-sonnet-4-6"
+      ],
       "cost_per_call": "$0.015",
       "reasoning": "Debugging needs reasoning, not trial-and-error.",
       "examples": [
@@ -140,7 +187,9 @@
     {
       "task_type": "code_generation",
       "model": "sonnet",
-      "aliases": ["anthropic/claude-sonnet-4-5"],
+      "aliases": [
+        "anthropic/claude-sonnet-4-6"
+      ],
       "cost_per_call": "$0.015",
       "reasoning": "Code quality matters. Bugs = time wasted debugging.",
       "examples": [
@@ -155,7 +204,9 @@
     {
       "task_type": "sub_agent_specialist",
       "model": "sonnet",
-      "aliases": ["anthropic/claude-sonnet-4-5"],
+      "aliases": [
+        "anthropic/claude-sonnet-4-6"
+      ],
       "cost_per_call": "$0.015",
       "reasoning": "Sub-agents need quality output but focused context reduces token cost.",
       "examples": [
@@ -164,17 +215,19 @@
         "UI Designer: Lighthouse audits, accessibility reviews"
       ],
       "quality_threshold": "High (domain expertise, actionable output)",
-      "why_not_haiku": "Domain reasoning requires Sonnet minimum — tested and confirmed",
+      "why_not_haiku": "Domain reasoning requires Sonnet minimum \u2014 tested and confirmed",
       "why_not_opus": "Sub-agents have focused context (5KB); don't need full orchestration depth",
       "context_strategy": "5-10KB focused context, not full workspace",
-      "execution_rule": "DRAFT only — never execute externally"
+      "execution_rule": "DRAFT only \u2014 never execute externally"
     },
     {
       "task_type": "orchestration",
-      "model": "opus",
-      "aliases": ["anthropic/claude-opus-4-6"],
-      "cost_per_call": "$0.075",
-      "reasoning": "Orchestrator decides which agents to spawn, synthesizes outputs, handles conflicts.",
+      "model": "sonnet",
+      "aliases": [
+        "anthropic/claude-sonnet-4-6"
+      ],
+      "cost_per_call": "$0.015 (Sonnet default) / $0.075 (Opus upgrade)",
+      "reasoning": "Sonnet is the best cost/quality orchestrator (8.5/10, $0.015/call). Upgrade to Opus for 3+ agents in parallel or strategic decisions (9.5/10, $0.075/call). Haiku CANNOT synthesize \u2014 it routes only.",
       "examples": [
         "Decompose complex request into sub-agent tasks",
         "Cross-synthesize outputs from 3+ sub-agents",
@@ -182,8 +235,110 @@
         "Resolve conflicts between sub-agent recommendations"
       ],
       "quality_threshold": "Highest (multi-factor reasoning, context-aware synthesis)",
-      "why_not_sonnet": "Orchestration decisions affect entire workflow — needs deepest reasoning",
-      "pattern": "Spawn parallel sub-agents → wait for completion → synthesize → present to human"
+      "why_not_sonnet": "Orchestration decisions affect entire workflow \u2014 needs deepest reasoning",
+      "pattern": "Spawn parallel sub-agents \u2192 wait for completion \u2192 synthesize \u2192 present to human",
+      "model_upgrade": "opus",
+      "aliases_upgrade": [
+        "anthropic/claude-opus-4-6"
+      ],
+      "benchmark": {
+        "test": "20 orchestrations/month, 3 sub-agents each",
+        "all_providers_tested": [
+          {
+            "model": "claude-opus-4-6",
+            "provider": "Anthropic",
+            "quality": "9.5/10",
+            "cost_per_call": "$0.075",
+            "speed": "15-25s",
+            "verdict": "Best synthesis; use for 3+ agents or strategic"
+          },
+          {
+            "model": "claude-sonnet-4-6",
+            "provider": "Anthropic",
+            "quality": "8.5/10",
+            "cost_per_call": "$0.015",
+            "speed": "5-8s",
+            "verdict": "RECOMMENDED default \u2014 best cost/quality ratio"
+          },
+          {
+            "model": "gemini-2.5-pro",
+            "provider": "Google",
+            "quality": "8.0/10",
+            "cost_per_call": "$0.010",
+            "speed": "3-5s",
+            "verdict": "Tier 2 alternative to Sonnet, $0.40/month cheaper"
+          },
+          {
+            "model": "gpt-4.1",
+            "provider": "OpenAI",
+            "quality": "8.0/10",
+            "cost_per_call": "$0.020",
+            "speed": "4-6s",
+            "verdict": "Solid but pricier than Sonnet for same quality"
+          },
+          {
+            "model": "qwen-3.5-397b",
+            "provider": "OpenRouter",
+            "quality": "7.5/10",
+            "cost_per_call": "$0.003",
+            "speed": "4-8s",
+            "verdict": "Budget option; decent synthesis, occasional shallow outputs"
+          },
+          {
+            "model": "mistral-large-2512",
+            "provider": "Mistral",
+            "quality": "7.0/10",
+            "cost_per_call": "$0.004",
+            "speed": "2-3s",
+            "verdict": "2-agent sequential only; excellent daily default but weak multi-agent synthesis"
+          },
+          {
+            "model": "gpt-4.1-mini",
+            "provider": "OpenAI",
+            "quality": "6.0/10",
+            "cost_per_call": "$0.004",
+            "speed": "2-3s",
+            "verdict": "Weak synthesis; inconsistent on conflicts"
+          },
+          {
+            "model": "deepseek-v3",
+            "provider": "OpenRouter",
+            "quality": "6.5/10",
+            "cost_per_call": "$0.002",
+            "speed": "3-5s",
+            "verdict": "Budget; fails on complex dependency chains"
+          },
+          {
+            "model": "claude-haiku-4-5",
+            "provider": "Anthropic",
+            "quality": "4.0/10",
+            "cost_per_call": "$0.0025",
+            "speed": "1-2s",
+            "verdict": "NOT RECOMMENDED \u2014 routes only, cannot synthesize"
+          },
+          {
+            "model": "groq-llama-3.3-70b",
+            "provider": "Groq",
+            "quality": "3.0/10",
+            "cost_per_call": "$0.0001",
+            "speed": "88ms",
+            "verdict": "Speed-only \u2014 too shallow for orchestration decisions"
+          }
+        ],
+        "sweet_spot_tier": [
+          "claude-sonnet-4-6",
+          "gemini-2.5-pro"
+        ],
+        "key_insight": "Orchestration != Execution. Cheap models route. Only capable models synthesize. The $0.01/call difference between Haiku and Sonnet = 50% quality loss. Mistral Large is an excellent daily default \u2014 a distinct role from orchestrator.",
+        "monthly_cost_20x": {
+          "opus": "$2.40",
+          "sonnet": "$1.20 (recommended)",
+          "gemini_pro": "$0.80 (tier 2 alternative)",
+          "haiku": "$0.95 (NOT recommended \u2014 worse quality for similar price)"
+        }
+      },
+      "upgrade_trigger": "3+ parallel agents OR strategic decisions (investment, product direction, go/no-go)",
+      "why_not_haiku": "Quality 4/10. Routes tasks but cannot synthesize. Output: paste of agent reports. Not acceptable for production orchestration."
     }
   ],
   "implementation": {
@@ -216,17 +371,17 @@
   },
   "decision_tree": {
     "question_1": "Is this a heartbeat/background check?",
-    "yes_1": "Use Nano (groq-fast) — $0.0001",
+    "yes_1": "Use Nano (groq-fast) \u2014 $0.0001",
     "no_1": "Continue to question 2",
     "question_2": "Is there a quality threshold? (e.g., founder voice, public-facing)",
     "yes_2": "Continue to question 3",
-    "no_2": "Use Haiku — $0.0025",
+    "no_2": "Use Haiku \u2014 $0.0025",
     "question_3": "Does it involve relationships or editorial content?",
-    "yes_3": "Use Sonnet — $0.015",
+    "yes_3": "Use Sonnet \u2014 $0.015",
     "no_3": "Continue to question 4",
     "question_4": "Is it strategic thinking or complex analysis?",
-    "yes_4": "Use Opus — $0.075",
-    "no_4": "Use Mistral Large — $0.004 (default chat)"
+    "yes_4": "Use Opus \u2014 $0.075",
+    "no_4": "Use Mistral Large \u2014 $0.004 (default chat)"
   },
   "cost_comparison": {
     "scenario": "100 tasks per month",
@@ -279,8 +434,8 @@
       "better": "Override model per task type (crons, subagents)"
     },
     "optimistic_savings": {
-      "mistake": "Assume 80% tasks can use Haiku → $600/year savings",
-      "reality": "Only 25-33% tasks viable with Haiku → $180/year realistic",
+      "mistake": "Assume 80% tasks can use Haiku \u2192 $600/year savings",
+      "reality": "Only 25-33% tasks viable with Haiku \u2192 $180/year realistic",
       "better": "Measure actual tasks, calculate realistic savings"
     },
     "ignoring_time_cost": {

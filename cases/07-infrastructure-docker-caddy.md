@@ -163,7 +163,7 @@ assets.nyx.cristiantala.com {
 
 ## Docker Compose Setup
 
-**File:** `/home/moltbot/docker/docker-compose.yml`
+**File:** `~/docker/docker-compose.yml`
 
 ```yaml
 version: '3.8'
@@ -256,7 +256,7 @@ networks:
 
 **Start all services:**
 ```bash
-cd /home/moltbot/docker
+cd ~/docker
 docker-compose up -d
 ```
 

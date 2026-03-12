@@ -177,7 +177,7 @@ Check for broken file references in key docs:
 #!/bin/bash
 # validate-refs.sh - Find broken file references in markdown files
 
-WORKSPACE="/home/moltbot/clawd"
+WORKSPACE="~/clawd"
 ISSUES=0
 
 grep -rh '\`[^`]*\`' "$WORKSPACE/AGENTS.md" "$WORKSPACE/TOOLS.md" | \
@@ -238,7 +238,7 @@ Workspace files should be committed to GitHub daily. This provides:
 #!/bin/bash
 # daily-git-commit.sh
 
-cd /home/moltbot/clawd
+cd ~/clawd
 
 git add -A
 git commit -m "Daily backup $(date +%Y-%m-%d)" || echo "Nothing to commit"

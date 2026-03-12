@@ -312,9 +312,9 @@ This is not just "spawn three agents." The orchestrator must understand which ag
 | Component | Model | Calls | Cost/Call | Total |
 |-----------|-------|-------|-----------|-------|
 | Orchestrator (Opus) | claude-opus-4-6 | 1 | $0.075 | $0.075 |
-| Growth Hacker (Sonnet) | claude-sonnet-4-5 | 1 | $0.015 | $0.015 |
-| Campaign Builder (Sonnet) | claude-sonnet-4-5 | 1 | $0.015 | $0.015 |
-| UI Designer (Sonnet) | claude-sonnet-4-5 | 1 | $0.015 | $0.015 |
+| Growth Hacker (Sonnet) | claude-sonnet-4-6 | 1 | $0.015 | $0.015 |
+| Campaign Builder (Sonnet) | claude-sonnet-4-6 | 1 | $0.015 | $0.015 |
+| UI Designer (Sonnet) | claude-sonnet-4-6 | 1 | $0.015 | $0.015 |
 | Follow-up clarifications | Sonnet | ~2-3 | $0.015 | $0.045 |
 | **Total per orchestrated run** | | | | **$0.165–$0.30** |
 
