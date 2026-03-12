@@ -7,6 +7,121 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.2.0] - 2026-03-12
+
+### Added
+
+**Case Studies (4 new):**
+- `cases/10-multi-agent-orchestration.md` — Spawnable specialized sub-agents
+  - Growth Hacker, Campaign Builder, UI Designer agents
+  - Agent Identity pattern: identity + workflow + decision framework
+  - Parallel execution (8-hour strategy → 30 min automated)
+  - Dedicated Telegram Topics per agent (bidirectional)
+  - Model selection: Sonnet for sub-agents, Opus for orchestration
+  - Anti-pattern documented: don't let sub-agents execute externally
+  - Cost: ~$0.15-0.30 per orchestrated run
+
+- `cases/11-wordpress-plugin-pipeline.md` — Plugin development and deployment
+  - Two plugins built: Lean Redirects + Lean CTAs
+  - R2 CDN for zip distribution
+  - SSH config per provider (WPMU DEV, Rocket.net, Hostinger)
+  - WP-CLI PHP version mismatch fixes
+  - REST API fallback when SSH blocked
+  - WordPress.org submission process (DNS verification)
+  - Cost: $0/month
+
+- `cases/12-linkedin-posting-party.md` — Real-time engagement tracking
+  - Google Sheets as live dashboard
+  - Unipile API + browser fallback for 2nd-degree connections
+  - LinkedIn Algorithm Q1 2026 data (van der Blom 1.8M posts)
+  - 15+ word comments = 2.5x weight
+  - Links in body = -60% distribution
+  - First comment strategy for links
+  - Cost: $0/month
+
+- `cases/13-cloudflare-pages-landings.md` — Static landing pages
+  - GitHub → Cloudflare Pages pipeline
+  - R2 for assets
+  - Lighthouse: 81 → 97 Performance, 76 → 95 Accessibility
+  - robots.txt fixing 507 errors
+  - _headers for cache control
+  - WCAG compliance details
+  - Cost: $0/month vs $12-27/month WordPress
+
+**Documentation (4 new):**
+- `docs/multi-agent-patterns.md` — Architecture patterns reference
+  - Agent Identity pattern (3 mandatory sections)
+  - Spawnable sub-agents via sessions_spawn
+  - Dedicated Telegram Topics for agent communication
+  - Orchestration: parallel execution + cross-synthesis
+  - Skills as docs vs skills as agents comparison
+  - Anti-patterns documented
+
+- `docs/cloudflare-r2-pages.md` — CDN and hosting guide
+  - R2 bucket setup and custom domains
+  - Upload script (scripts/upload-to-r2.sh)
+  - Pages deployment from GitHub
+  - Cache headers configuration
+  - Cost comparison vs S3 (R2 wins on egress)
+  - CORS troubleshooting
+
+- `docs/memory-management.md` — Long-running agent memory
+  - Three-layer architecture: working → daily → archive
+  - Size targets: MEMORY.md ≤4KB, AGENTS.md ≤4KB, TOOLS.md ≤10KB
+  - Memory flush pre-compaction
+  - Nightly optimization cron (3 AM)
+  - Reference validation script
+  - Embeddings configuration
+
+- `docs/infrastructure-lessons.md` — Production incidents and fixes
+  - Hostinger filesystem read-only crisis (Mar 5)
+  - clawdbot.service disabled silently (Mar 9)
+  - SSH access per provider (WPMU DEV, Rocket.net, Hostinger)
+  - PHP version mismatches (CLI vs web)
+  - WP-CLI across environments
+  - Monitoring recommendations
+
+### Changed
+
+**configs/model-routing-rules.json:**
+- Updated model versions: claude-opus-4-6, claude-sonnet-4-5, claude-haiku-4-5
+- Added `sub_agent_specialist` routing rule (Sonnet, focused context)
+- Added `orchestration` routing rule (Opus, synthesis decisions)
+- Added model_versions reference block
+- Updated test coverage: 99 → 130+ tasks
+
+**README.md:**
+- Version: 1.1.0 → 1.2.0
+- Stats: 38 files → 45+, 99 tasks → 130+, 12 workflows → 20+
+- Added 4 new cases to Table of Contents
+- Added "New in v1.2.0" documentation section
+- Added "What's New in v1.2.0" summary section
+- Updated last update date
+
+### Technical Insights
+
+**LinkedIn Algorithm Q1 2026 (van der Blom study, 1.8M posts):**
+- Native video: +69% distribution
+- Image: +11%, Carousel PDF: +7%
+- Links in body: -60% distribution
+- Reply within 1h: +35% visibility
+- Comments 15+ words: 2.5x weight
+- Depth Score = (Dwell Time ×2) + (Comment Quality ×15) + (Saves ×5) - Bounce Rate
+
+**Multi-Agent Architecture Evolution:**
+- Skills evolved from API docs to agent identities
+- Three mandatory sections: Agent Identity, Workflow Integration, Decision Framework
+- Sub-agents with 5KB focused context ≈ main agent quality at 4x less cost
+- Anti-pattern: sub-agents must DRAFT, not execute externally
+
+**Infrastructure Learnings:**
+- `systemctl enable` is not optional (service survives reboots)
+- Filesystem read-only = kernel self-protection, `mount -o remount,rw /` is temporary fix
+- SSH access varies wildly: WPMU DEV temporary hosts, Rocket.net IP whitelist, Hostinger port 65002
+- WP-CLI PHP version ≠ web PHP version — always specify path
+
+---
+
 ## [1.1.0] - 2026-02-19
 
 ### Added
@@ -111,24 +226,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Future Roadmap
 
-### Planned for v1.2.0
+### Planned for v1.3.0
 
 **Documentation:**
-- Advanced monitoring and alerting patterns
 - Disaster recovery and backup strategies
 - Scale-up patterns (100+ workflows, 1000+ tasks)
+- Advanced sub-agent patterns (recursive orchestration)
 
 **Case Studies:**
 - Image generation workflows (Replicate API)
-- Advanced LinkedIn automation (network building)
 - Cross-platform content distribution
 - Analytics dashboard (metrics aggregation)
+- Voice memo transcription pipeline
 
 **Tools:**
 - Interactive cost calculator (web UI)
 - Workflow library (importable templates)
-- Health check automation
 - Performance benchmarking suite
+- Agent identity template generator
 
 ### Planned for v2.0.0
 
@@ -142,6 +257,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ---
 
 ## Release Notes
+
+### v1.2.0 Summary
+
+**What's New:**
+- Multi-agent orchestration with spawnable sub-agents (4 new case studies)
+- Infrastructure lessons from production incidents (filesystem crisis, SSH hell)
+- LinkedIn Algorithm Q1 2026 data (van der Blom 1.8M post study)
+- Cloudflare R2 + Pages for $0/month CDN and hosting
+
+**Who Should Upgrade:**
+- Anyone building multi-agent workflows
+- Users deploying across multiple hosting providers
+- LinkedIn power users (posting parties, engagement groups)
+- Cost-conscious operators (landing pages on static vs WordPress)
+
+**Breaking Changes:** None
+
+**Migration:** No action required, all additions are new content
+
+---
 
 ### v1.1.0 Summary
 

@@ -2,8 +2,17 @@
   "model_routing": {
     "description": "Strategic model selection based on task complexity and quality requirements",
     "philosophy": "Right model for right task (not cheapest model everywhere)",
-    "tested_on": "99 production tasks over 60 days",
-    "total_savings": "$180/year (17% reduction) without quality loss"
+    "tested_on": "130+ production tasks over 90 days",
+    "total_savings": "$180/year (17% reduction) without quality loss",
+    "last_updated": "2026-03-12",
+    "version": "1.2.0",
+    "model_versions": {
+      "opus": "claude-opus-4-6",
+      "sonnet": "claude-sonnet-4-5",
+      "haiku": "claude-haiku-4-5",
+      "default_chat": "mistral-large-2512",
+      "heartbeat": "groq-fast"
+    }
   },
   "rules": [
     {
@@ -142,6 +151,39 @@
       "quality_threshold": "High (correct, idiomatic, maintainable)",
       "when_haiku_ok": "Trivial edits (fix typo, update config value)",
       "override_to_opus": "Complex algorithms, system design"
+    },
+    {
+      "task_type": "sub_agent_specialist",
+      "model": "sonnet",
+      "aliases": ["anthropic/claude-sonnet-4-5"],
+      "cost_per_call": "$0.015",
+      "reasoning": "Sub-agents need quality output but focused context reduces token cost.",
+      "examples": [
+        "Growth Hacker: ICE scoring, funnel analysis",
+        "Campaign Builder: email sequences, social copy",
+        "UI Designer: Lighthouse audits, accessibility reviews"
+      ],
+      "quality_threshold": "High (domain expertise, actionable output)",
+      "why_not_haiku": "Domain reasoning requires Sonnet minimum — tested and confirmed",
+      "why_not_opus": "Sub-agents have focused context (5KB); don't need full orchestration depth",
+      "context_strategy": "5-10KB focused context, not full workspace",
+      "execution_rule": "DRAFT only — never execute externally"
+    },
+    {
+      "task_type": "orchestration",
+      "model": "opus",
+      "aliases": ["anthropic/claude-opus-4-6"],
+      "cost_per_call": "$0.075",
+      "reasoning": "Orchestrator decides which agents to spawn, synthesizes outputs, handles conflicts.",
+      "examples": [
+        "Decompose complex request into sub-agent tasks",
+        "Cross-synthesize outputs from 3+ sub-agents",
+        "Identify dependencies and execution order",
+        "Resolve conflicts between sub-agent recommendations"
+      ],
+      "quality_threshold": "Highest (multi-factor reasoning, context-aware synthesis)",
+      "why_not_sonnet": "Orchestration decisions affect entire workflow — needs deepest reasoning",
+      "pattern": "Spawn parallel sub-agents → wait for completion → synthesize → present to human"
     }
   ],
   "implementation": {

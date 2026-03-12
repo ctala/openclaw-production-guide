@@ -2,7 +2,7 @@
 
 > **Real-world optimization from a founder who sold his tech startup and now mentors others in tech and automation**
 
-Running OpenClaw in production is different from running it as a toy project. This guide shares hard-earned lessons from **38 files indexed, 99 active tasks, 12 automated workflows, and countless hours optimizing costs without sacrificing quality.**
+Running OpenClaw in production is different from running it as a toy project. This guide shares hard-earned lessons from **45+ files indexed, 130+ active tasks, 20+ automated workflows, and countless hours optimizing costs without sacrificing quality.**
 
 **Who this is for:** Founders, operators, and technical leaders running OpenClaw 24/7 for real business workflows—not just experimentation.
 
@@ -93,11 +93,17 @@ This guide distills **what actually works** when cost, quality, and reliability 
 - **Automated Archival** — Nightly optimization skill
 - **Real Results** — 21,400 → 6,500 tokens (-69.8%), $135/month savings
 
-### 6. [Multi-Agent Architecture](docs/06-multi-agent-architecture.md) 🆕
+### 6. [Multi-Agent Architecture](docs/06-multi-agent-architecture.md)
 - **Specialized Sub-Agents** — n8n-specialist, content-creator, wordpress-publisher
 - **Context Efficiency** — 5KB focused > 27KB generic
 - **Cost Savings** — Haiku + small context ≈ Sonnet + large context (4x cheaper)
 - **Real Results** — n8n-specialist operational, production-ready workflows
+
+### New in v1.2.0:
+- **[Multi-Agent Patterns](docs/multi-agent-patterns.md) 🆕** — Agent Identity pattern, orchestration, anti-patterns
+- **[Cloudflare R2 + Pages](docs/cloudflare-r2-pages.md) 🆕** — CDN and hosting at $0/month
+- **[Memory Management](docs/memory-management.md) 🆕** — Daily logs, archives, size targets, nightly optimization
+- **[Infrastructure Lessons](docs/infrastructure-lessons.md) 🆕** — SSH hell, filesystem crisis, PHP mismatches
 
 ### 7. [Real-World Cases](cases/)
 - [Case 1: Skool Community Automation](cases/01-skool-automation.md) — 93.75% accuracy, inline buttons workflow
@@ -108,7 +114,11 @@ This guide distills **what actually works** when cost, quality, and reliability 
 - [Case 6: Task Management (NocoDB)](cases/06-task-management-nocodb.md) — 99 active tasks, daily AI optimization
 - [Case 7: Infrastructure (Docker + Caddy)](cases/07-infrastructure-docker-caddy.md) — 8 services, wildcard SSL, $552/year saved
 - [Case 8: n8n Workflow Automation](cases/08-n8n-workflow-automation.md) — 20+ workflows, 15 hours/week saved
-- **[Case 9: Skool Member Validation](cases/09-skool-member-validation.md) 🆕** — LinkedIn identity verification, "Sky is the limit"
+- [Case 9: Skool Member Validation](cases/09-skool-member-validation.md) — LinkedIn identity verification, "Sky is the limit"
+- **[Case 10: Multi-Agent Orchestration](cases/10-multi-agent-orchestration.md) 🆕** — Spawnable sub-agents, 8-hour strategy → 30 min
+- **[Case 11: WordPress Plugin Pipeline](cases/11-wordpress-plugin-pipeline.md) 🆕** — Dev to deploy across multiple hosts, $0/month
+- **[Case 12: LinkedIn Posting Party](cases/12-linkedin-posting-party.md) 🆕** — Real-time tracking for 12 participants, algorithm insights
+- **[Case 13: Cloudflare Pages Landings](cases/13-cloudflare-pages-landings.md) 🆕** — Static pages, 97 Lighthouse, $0/month hosting
 
 ### 8. [Ready-to-Use Configs](configs/)
 - [Optimized embeddings config](configs/embeddings-optimized.json)
@@ -285,10 +295,33 @@ MIT License — feel free to use, adapt, and share. Attribution appreciated.
 
 ---
 
-**Last Updated:** 2026-02-19  
-**Version:** 1.1.0  
-**Production Runtime:** 60+ days, 38 files indexed, 99 active tasks, 12 automated workflows  
+## 🆕 What's New in v1.2.0 (March 2026)
+
+### New Case Studies
+- **Multi-Agent Orchestration** — Turn 8-hour strategy sessions into 30-minute parallel agent execution
+- **WordPress Plugin Pipeline** — Build once, deploy anywhere (WPMU DEV, Rocket.net, WordPress.org)
+- **LinkedIn Posting Party** — Real-time tracking for engagement groups with algorithm insights
+- **Cloudflare Pages Landings** — Kill WordPress for landing pages, get 97 Lighthouse score at $0/month
+
+### New Documentation
+- **Multi-Agent Patterns** — Agent Identity pattern, orchestration best practices, anti-patterns
+- **Cloudflare R2 + Pages** — CDN and hosting setup, cache headers, CORS troubleshooting
+- **Memory Management** — Size targets, nightly optimization, reference validation
+- **Infrastructure Lessons** — Filesystem crisis recovery, SSH per-provider, PHP version hell
+
+### Key Learnings
+- LinkedIn Algorithm Q1 2026: -60% distribution for body links, +69% for native video, 15+ word comments = 2.5x weight
+- Skills evolved from API docs to spawnable agent identities (Agent Identity + Workflow Integration + Decision Framework)
+- Unipile API returns 0 for 2nd-degree connections — browser fallback required
+- `clawdbot.service` must be `enabled` (not just `started`) to survive reboots
+
+---
+
+**Last Updated:** 2026-03-12  
+**Version:** 1.2.0  
+**Production Runtime:** 90+ days, 45+ files indexed, 130+ active tasks, 20+ automated workflows  
 **Recent Additions:**
-- Memory Optimization guide (-69.8% context)
-- Multi-Agent Architecture (n8n-specialist operational)
-- Skool Member Validation case study (LinkedIn identity verification)
+- Multi-Agent Orchestration case (4 new cases total)
+- Memory Management + Infrastructure Lessons docs
+- LinkedIn Algorithm Q1 2026 data (van der Blom 1.8M post study)
+- Model routing for sub-agents and orchestration
