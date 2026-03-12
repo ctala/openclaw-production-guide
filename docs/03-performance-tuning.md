@@ -299,7 +299,7 @@ Generated lead-capture-workflow.json (6.5KB). Deployed to n8n staging.
 | Mistral Large 2512 | 2–3s | Default chat, general tasks |
 | Gemini 2.5 Pro | 3–5s | Synthesis, content |
 | Sonnet 4.6 | 5–8s | Editorial, community, code |
-| Opus 4.6 | 15–25s | Strategic analysis, complex orchestration |
+| Opus 4.6 | 15–25s | Strategic analysis, deep cron jobs (NOT orchestration) |
 
 For interactive workflows (user waiting for response), Mistral Large at 2–3s is the practical cap for "feels instant." Sonnet at 5–8s is acceptable. Opus at 15–25s should be cron-only or async.
 

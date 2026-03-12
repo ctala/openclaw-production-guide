@@ -186,7 +186,7 @@ The orchestrator's synthesis must:
 |------|-------|----------|-----------|
 | **Orchestrator (default)** | Sonnet 4.6 | Anthropic | Best cost/quality for synthesis — detects conflicts, cross-references, adjusts plan |
 | **Orchestrator (alt)** | Gemini 2.5 Pro | Google | Same tier, $0.40/month cheaper, good provider diversity |
-| **Orchestrator (3+ agents / strategic)** | Opus 4.6 | Anthropic | Deepest reasoning for complex cross-agent synthesis |
+| **Orchestrator (default)** | Sonnet 4.6 | Anthropic | Best cost/quality — handles 95% of orchestration |
 | **Domain specialist** | Sonnet 4.6 | Anthropic | Deep domain analysis with quality output |
 | **Simple data tasks** | Haiku 4.5 | Anthropic | Mechanical operations within a sub-agent (fetch, format, extract) |
 | **Heartbeats** | Groq Llama 3.3 70B | Groq | Boolean checks, no reasoning needed — 88ms, near-free |
@@ -233,7 +233,7 @@ All models tested on identical 3-agent runs (Growth Hacker + Campaign Builder + 
 
 **Recommended default: Sonnet 4.6** (Anthropic) — best cost/quality ratio at $1.20/month.  
 **Tier 2 alternative: Gemini 2.5 Pro** — same quality bracket as Sonnet at $0.40/month less.  
-Note: Opus 4.6 is available for very complex scenarios but in practice Sonnet handles 95% of orchestration needs.  
+Sonnet 4.6 is the production orchestrator. No need for Opus — Sonnet handles all orchestration scenarios at $1.20/month.  
 **Important: Mistral Large is an excellent daily default model** — but do not confuse this with orchestration capability. At 7/10 synthesis quality it works for simple 2-agent chains; it breaks down in multi-dependency scenarios.
 
 ---
@@ -345,7 +345,7 @@ Haiku tested on sub-agent tasks showed:
 - Copy generation: Generic output without brand voice
 - UX audits: Checklist items without prioritization
 
-**Conclusion:** Sub-agent quality = Sonnet minimum. Orchestrator = Sonnet default, Opus for complexity.
+**Conclusion:** Sub-agent quality = Sonnet minimum. Orchestrator = Sonnet. Period.
 
 ---
 
@@ -432,7 +432,7 @@ Before deploying a multi-agent workflow:
 - [ ] Main agent has "read all Topics" in synthesis step
 - [ ] Sub-agent execution boundaries explicitly stated ("DRAFT only")
 - [ ] Human approval gate before any external execution
-- [ ] Orchestrator model: Sonnet 4.6 (default) or Opus 4.6 (3+ agents / strategic decisions)
+- [ ] Orchestrator model: Sonnet 4.6
 - [ ] Sub-agent model: Sonnet minimum
 - [ ] Sub-agent context: focused (not full workspace)
 - [ ] Test with low-stakes task before production use

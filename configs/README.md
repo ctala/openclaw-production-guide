@@ -39,7 +39,7 @@ openclaw gateway restart
 - ✅ Mistral Large 2512 as default (fast, cost-effective)
 - ✅ Groq/LLaMA for heartbeats (95% cheaper than Sonnet)
 - ✅ Sonnet auto-upgrade for editorial and quality-critical tasks
-- ✅ Opus for orchestration and strategic analysis
+- ✅ Sonnet for orchestration, Opus for deep analysis crons
 
 **Benefit:**
 - 95% reduction in heartbeat costs

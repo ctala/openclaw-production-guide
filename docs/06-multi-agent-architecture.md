@@ -659,7 +659,7 @@ All models tested on identical 3-agent runs. Scored on conflict detection, cross
 | Groq Llama 3.3 70B | Groq | 3.0/10 | $0.0001 | 88ms | $0.01 | ❌ Speed only — too shallow for orchestration |
 
 **Default:** Sonnet 4.6. **Tier 2 alternative:** Gemini 2.5 Pro (same quality bracket, $0.40/month cheaper).  
-Note: In practice, Sonnet handles 95% of orchestration. Opus is overkill for most use cases.  
+Sonnet 4.6 is the production orchestrator. Opus is not used for orchestration.  
 **Note on Mistral Large:** Excellent as your daily default chat model — but this is a distinct role from orchestrator. Don't conflate them.
 
 ---

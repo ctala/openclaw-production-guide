@@ -35,7 +35,7 @@ Agent: [writes a 3,000-token response that's mediocre on all three]
 ### Architecture Overview
 
 ```
-Main Agent (Nyx/Opus) — Orchestrator
+Main Agent (Nyx/Sonnet) — Orchestrator
   ├── [parallel spawn]
   │   ├── Growth Hacker Sub-Agent (Sonnet)
   │   │   ├── Reads: skills/growth-hacker/SKILL.md
@@ -90,7 +90,7 @@ ICE Score = (Impact × Confidence × Ease) / 3
 
 | Component | Tool | Purpose |
 |-----------|------|---------|
-| Orchestrator | OpenClaw main session (Opus 4.6) | Spawns agents, synthesizes results |
+| Orchestrator | OpenClaw main session (Sonnet 4.6) | Spawns agents, synthesizes results |
 | Sub-agents | OpenClaw sessions (Sonnet 4.5) | Domain-specific execution |
 | Communication | Telegram Topics (6011, 6012, 6013) | Bidirectional agent ↔ human |
 | Skills | `~/clawd/skills/*/SKILL.md` | Agent identity + workflow + decision framework |
@@ -261,11 +261,11 @@ Sub-agents DRAFT. Humans APPROVE. Main agent EXECUTES.
 
 Why: Sub-agents have limited context. They don't know if the account is in a grace period, if the list is warming up, or if there's a conflicting campaign already scheduled. Main agent has full context for safe execution.
 
-### 5. Model Selection: Sonnet for Sub-Agents, Opus for Orchestration
+### 5. Model Selection: Sonnet Across the Board
 
 | Role | Model | Reasoning |
 |------|-------|-----------|
-| Orchestrator | Opus 4.6 | Needs to reason about which agents to spawn, how to synthesize, what's priority |
+| Orchestrator | Sonnet 4.6 | Reasons about which agents to spawn, synthesizes outputs, resolves conflicts |
 | Growth Hacker | Sonnet 4.5 | Domain expertise + quality output, doesn't need orchestration depth |
 | Campaign Builder | Sonnet 4.5 | Writing quality matters, Haiku produces generic copy |
 | UI Designer | Sonnet 4.5 | Technical analysis + actionable recommendations |
@@ -311,7 +311,7 @@ This is not just "spawn three agents." The orchestrator must understand which ag
 
 | Component | Model | Calls | Cost/Call | Total |
 |-----------|-------|-------|-----------|-------|
-| Orchestrator (Opus) | claude-opus-4-6 | 1 | $0.075 | $0.075 |
+| Orchestrator (Sonnet) | claude-sonnet-4-6 | 1 | $0.015 | $0.015 |
 | Growth Hacker (Sonnet) | claude-sonnet-4-6 | 1 | $0.015 | $0.015 |
 | Campaign Builder (Sonnet) | claude-sonnet-4-6 | 1 | $0.015 | $0.015 |
 | UI Designer (Sonnet) | claude-sonnet-4-6 | 1 | $0.015 | $0.015 |
